@@ -5,8 +5,8 @@
         xmlns:local="clr-namespace:sis_app.Views"
         xmlns:controls="clr-namespace:sis_app.Controls.Add"
         xmlns:viewControls="clr-namespace:sis_app.Controls.View"
-        Title="Gungnir - Home" Height="600" Width="1100"
-        ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="Gungnir - Home" Height="800" Width="1500"
+        WindowStartupLocation="CenterScreen">
 
     <!-- resource dictionary containing styles and brushes -->
     <Window.Resources>
