@@ -1,0 +1,189 @@
+<UserControl x:Class="sis_app.Controls.View.ViewProgramsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:sis_app.Controls.View"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <!-- main grid container -->
+    <Grid>
+        <!-- centered border with rounded corners -->
+        <Border HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Width="600"
+                CornerRadius="15"
+                Padding="0,10,0,15">
+
+            <!-- main content grid -->
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- top panel with search and sort -->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- search box -->
+                    <TextBox x:Name="SearchBox" 
+             Grid.Column="0"
+             Margin="-90,0,0,0"
+             Style="{StaticResource SearchBoxStyle}"
+             TextChanged="SearchBox_TextChanged"/>
+
+                    <!-- sort dropdown -->
+                    <ComboBox x:Name="SortComboBox" 
+              Grid.Column="1"
+              Width="235" 
+              Margin="0,10" 
+              Style="{StaticResource SortComboBoxStyle}"
+              SelectionChanged="SortComboBox_SelectionChanged">
+                        <ComboBoxItem Content="Date and Time Modified (Oldest First)"/>
+                        <ComboBoxItem Content="Date and Time Modified (Newest First)"/>
+                        <ComboBoxItem Content="Alphabetical Program Name"/>
+                        <ComboBoxItem Content="Alphabetical Program Code"/>
+                        <ComboBoxItem Content="Alphabetical College Code"/>
+                        <ComboBoxItem Content="Alphabetical User"/>
+                    </ComboBox>
+                </Grid>
+
+                <!-- main data listview -->
+                <ListView x:Name="ProgramListView"
+                         Grid.Row="1"
+                         Margin="0,10"
+                         SelectionMode="Multiple"
+                         Style="{StaticResource CustomListViewStyle}">
+                    <ListView.View>
+                        <GridView>
+                            <!-- program name column -->
+                            <GridViewColumn Header="Program Name" Width="175">
+                                <GridViewColumn.HeaderContainerStyle>
+                                    <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource HeaderStyle}"/>
+                                </GridViewColumn.HeaderContainerStyle>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                IsEnabled="{Binding ElementName=EditModeToggleButton, Path=IsChecked}"
+                                                Style="{StaticResource TableCellTextBoxStyle}"
+                                                PreviewTextInput="ProgramNameTextBox_PreviewTextInput"
+                                                TextChanged="ProgramNameTextBox_TextChanged"
+                                                Width="{Binding Width, RelativeSource={RelativeSource AncestorType=GridViewColumn}}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <!-- program code column -->
+                            <GridViewColumn Header="Program Code" Width="100">
+                                <GridViewColumn.HeaderContainerStyle>
+                                    <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource HeaderStyle}"/>
+                                </GridViewColumn.HeaderContainerStyle>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Code, UpdateSourceTrigger=PropertyChanged}"
+                                                 IsEnabled="{Binding ElementName=EditModeToggleButton, Path=IsChecked}"
+                                                 PreviewTextInput="ProgramCodeTextBox_PreviewTextInput"
+                                                 TextChanged="ProgramCodeTextBox_TextChanged"
+                                                 Style="{StaticResource TableCellTextBoxStyle}"
+                                                 Width="{Binding Width, RelativeSource={RelativeSource AncestorType=GridViewColumn}}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <!-- college code column with edit/view modes -->
+                            <GridViewColumn Header="College Code" Width="100">
+                                <GridViewColumn.HeaderContainerStyle>
+                                    <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource HeaderStyle}"/>
+                                </GridViewColumn.HeaderContainerStyle>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <!-- combobox for edit mode -->
+                                            <ComboBox ItemsSource="{Binding DataContext._availableCollegeCodes, 
+                                                      RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                      SelectedItem="{Binding CollegeCode, UpdateSourceTrigger=PropertyChanged}"
+                                                      IsEnabled="{Binding ElementName=EditModeToggleButton, Path=IsChecked}"
+                                                      Style="{StaticResource TableCellComboBoxStyle}"
+                                                      Width="{Binding Width, RelativeSource={RelativeSource AncestorType=GridViewColumn}}"
+                                                      Visibility="{Binding ElementName=EditModeToggleButton, Path=IsChecked, 
+                                                                 Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                            <!-- textblock for view mode -->
+                                            <TextBlock Text="{Binding CollegeCode}"
+                                                      Style="{StaticResource TableCellStyle}"
+                                                      Width="100"
+                                                      Visibility="{Binding ElementName=EditModeToggleButton, Path=IsChecked, 
+                                                                 Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <!-- date and time column -->
+                            <GridViewColumn Header="Date and Time" Width="150">
+                                <GridViewColumn.HeaderContainerStyle>
+                                    <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource HeaderStyle}"/>
+                                </GridViewColumn.HeaderContainerStyle>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding DateTime}"
+                                                 Style="{StaticResource TableCellStyle}"
+                                                 Width="150"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <!-- user column -->
+                            <GridViewColumn Header="User" Width="100">
+                                <GridViewColumn.HeaderContainerStyle>
+                                    <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource HeaderStyle}"/>
+                                </GridViewColumn.HeaderContainerStyle>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding User}"
+                                                 Style="{StaticResource TableCellStyle}"
+                                                 Width="100"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <!-- bottom control panel -->
+                <Grid Grid.Row="2" Margin="0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- left-aligned action buttons -->
+                    <StackPanel Orientation="Horizontal" Grid.Column="0" HorizontalAlignment="Left">
+                        <Button Content="Clear Programs"
+                                x:Name="ClearProgramsButton"
+                                Click="ClearProgramsButton_Click"
+                                Style="{StaticResource ClearButtonStyle}"/>
+                        <Button Content="Delete Selected"
+                                x:Name="DeleteSelectedButton"
+                                Click="DeleteSelectedButton_Click"
+                                Margin="10,0,0,0"
+                                Style="{StaticResource DeleteSelectedStyle}"/>
+                    </StackPanel>
+
+                    <!-- edit mode toggle button -->
+                    <ToggleButton Grid.Column="1"
+                                x:Name="EditModeToggleButton"
+                                Content="Enable Edit Mode"
+                                Style="{StaticResource EditModeToggleStyle}"
+                                Checked="EditModeToggleButton_Checked"
+                                Unchecked="EditModeToggleButton_Unchecked"/>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

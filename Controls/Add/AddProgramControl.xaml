@@ -1,0 +1,83 @@
+<UserControl x:Class="sis_app.Controls.Add.AddProgramControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:sis_app.Controls.Add"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <!-- main grid container -->
+    <Grid>
+        <!-- centered border with rounded corners -->
+        <Border HorizontalAlignment="Center" 
+                VerticalAlignment="Center"
+                Width="400" 
+                CornerRadius="15" 
+                Padding="0,10,0,15" 
+                Opacity="0.95">
+
+            <!-- main content stack panel -->
+            <StackPanel Margin="20">
+                <!-- header text -->
+                <TextBlock Text="Add Program" 
+                          FontSize="24" 
+                          FontWeight="Bold" 
+                          Style="{StaticResource BaseTextBlockStyle}"
+                          Margin="0,10,0,0" 
+                          HorizontalAlignment="Center"/>
+
+                <!-- program name input section -->
+                <StackPanel Orientation="Vertical" Margin="0,20,0,10">
+                    <!-- program name label -->
+                    <TextBlock Text="Program Name" 
+                              Margin="40,0,0,0" 
+                              Style="{StaticResource BaseTextBlockStyle}" 
+                              HorizontalAlignment="Left"/>
+                    <!-- program name input field -->
+                    <TextBox x:Name="ProgramNameTextBox" 
+                            Style="{StaticResource BaseTextBoxStyle}"
+                            Height="30"
+                            PreviewTextInput="ProgramNameTextBox_PreviewTextInput"/>
+                </StackPanel>
+
+                <!-- program code input section -->
+                <StackPanel Orientation="Vertical" Margin="0,10,0,10">
+                    <!-- program code label -->
+                    <TextBlock Text="Program Code" 
+                              Margin="40,0,0,0" 
+                              Style="{StaticResource BaseTextBlockStyle}" 
+                              HorizontalAlignment="Left"/>
+                    <!-- program code input field -->
+                    <TextBox x:Name="ProgramCodeTextBox" 
+                            Style="{StaticResource BaseTextBoxStyle}"
+                            Height="30"
+                            PreviewTextInput="ProgramCodeTextBox_PreviewTextInput" 
+                            TextChanged="ProgramCodeTextBox_TextChanged"/>
+                </StackPanel>
+
+                <!-- college code input section -->
+                <StackPanel Orientation="Vertical" Margin="0,10,0,0">
+                    <!-- college code label -->
+                    <TextBlock Text="College Code" 
+                              Margin="40,0,0,0" 
+                              Style="{StaticResource BaseTextBlockStyle}" 
+                              HorizontalAlignment="Left"/>
+                    <!-- college code dropdown -->
+                    <ComboBox x:Name="CollegeCodeComboBox" 
+                             Style="{StaticResource BaseComboBoxStyle}"/>
+                </StackPanel>
+
+                <!-- submit button -->
+                <Button Content="Add Program" 
+                        x:Name="AddProgramButton" 
+                        Click="AddProgramButton_Click"
+                        Style="{StaticResource AddButtonStyle}"
+                        Width="100" 
+                        Height="25"
+                        HorizontalAlignment="Right"
+                        Margin="0,20,40,0"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
