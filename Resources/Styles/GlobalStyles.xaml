@@ -2,7 +2,13 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:local="clr-namespace:sis_app">
 
-    <!-- applicaiton's color palette --> 
+
+    <DropShadowEffect x:Key="SoftShadow" 
+          ShadowDepth="2" 
+          BlurRadius="5" 
+          Opacity="0.3"/>
+
+    <!-- color palette --> 
     <SolidColorBrush x:Key="Purple" Color="#7160E8"/>
     <SolidColorBrush x:Key="Red" Color="#E74C3C"/>
     <SolidColorBrush x:Key="Orange" Color="#E67E22"/>
@@ -11,12 +17,30 @@
     <SolidColorBrush x:Key="MediumLightGray" Color="#2E2E2E"/>
     <SolidColorBrush x:Key="LightGray" Color="#383838"/>
     <SolidColorBrush x:Key="White" Color="#D6D6D6"/>
+    <SolidColorBrush x:Key="LightSteelBlue" Color="#B0C4DE"/>
+    <SolidColorBrush x:Key="Peru" Color="#CD853F"/>
+    <SolidColorBrush x:Key="DarkBrown" Color="#4A3C31"/>
+    <SolidColorBrush x:Key="Goldenrod" Color="#B8860B"/>
+    <SolidColorBrush x:Key="Beige" Color="#F5F5DC"/>
+    <SolidColorBrush x:Key="MintGreen" Color= "#8FBC8F"/>
 
     <!-- base for textblocks -->
     <Style x:Key="BaseTextBlockStyle" TargetType="TextBlock">
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="{StaticResource Beige}"/>
         <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="FontSize" Value="14"/>
+    </Style>
+
+    <!-- input field base style -->
+    <Style x:Key="BaseInputStyle" TargetType="Control">
+        <Setter Property="Width" Value="280"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Margin" Value="0,5,0,15"/>
+        <Setter Property="Foreground" Value="{StaticResource Beige}"/>
+        <Setter Property="Background" Value="{StaticResource MediumLightGray}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource LightGray}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="10,5"/>
     </Style>
 
     <!-- base for textboxes (input boxes) -->
@@ -26,7 +50,7 @@
         <Setter Property="Margin" Value="5"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="FontFamily" Value="Segoe UI"/>
-        <Setter Property="Foreground" Value="{StaticResource White}"/>
+        <Setter Property="Foreground" Value="{StaticResource Beige}"/>
         <Setter Property="Background" Value="{StaticResource MediumLightGray}"/>
         <Setter Property="BorderBrush" Value="{StaticResource LightGray}"/>
         <Setter Property="BorderThickness" Value="1"/>
@@ -228,6 +252,63 @@
                         <!-- when pressed -->
                         <Trigger Property="IsChecked" Value="True">
                             <Setter Property="Background" Value="{StaticResource LightGray}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- login button style with hover effect -->
+    <Style x:Key="LoginButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource Peru}"/>
+        <Setter Property="Foreground" Value="{StaticResource Beige}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Padding" Value="8,3"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="BorderBrush" Value="{StaticResource LightGray}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#96632F"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- register button style with hover effect -->
+    <Style x:Key="RegisterButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource MintGreen}"/>
+        <Setter Property="Foreground" Value="{StaticResource Beige}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Padding" Value="8,3"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="BorderBrush" Value="{StaticResource LightGray}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#5A805A"/>
+                            
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

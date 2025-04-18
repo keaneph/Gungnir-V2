@@ -5,420 +5,495 @@
         xmlns:local="clr-namespace:sis_app.Views"
         xmlns:controls="clr-namespace:sis_app.Controls.Add"
         xmlns:viewControls="clr-namespace:sis_app.Controls.View"
-        Title="Gungnir - Home"
+        Title="La Accademia - Home"
         WindowStartupLocation="CenterScreen"
 		ResizeMode="NoResize"
         Width="1600"
         Height="900">
 
-	<!-- resource dictionary containing styles and brushes -->
-	<Window.Resources>
-		<!-- color palette definitions -->
-		<SolidColorBrush x:Key="PrimaryColor" Color="#7160E8"/>
-		<SolidColorBrush x:Key="DarkGray" Color="#1F1F1F"/>
-		<SolidColorBrush x:Key="MediumLightGray" Color="#2E2E2E"/>
-		<SolidColorBrush x:Key="LightGray" Color="#383838"/>
-		<SolidColorBrush x:Key="White" Color="#D6D6D6"/>
 
-		<!-- base text style -->
-		<Style x:Key="DefaultTextBlockStyle" TargetType="TextBlock">
-			<Setter Property="Foreground" Value="{StaticResource White}"/>
-			<Setter Property="FontFamily" Value="Segoe UI"/>
-			<Setter Property="FontSize" Value="14"/>
-		</Style>
+    <!-- resource dictionary containing styles and brushes -->
+    <Window.Resources>
 
-		<!-- sidebar button style with hover effect -->
-		<Style x:Key="SidebarButtonStyle" TargetType="Button">
-			<Setter Property="Background" Value="Transparent"/>
-			<Setter Property="BorderBrush" Value="Transparent"/>
-			<Setter Property="Foreground" Value="{StaticResource White}"/>
-			<Setter Property="HorizontalContentAlignment" Value="Left"/>
-			<Setter Property="Padding" Value="10"/>
-			<Setter Property="FontSize" Value="16"/>
-			<Setter Property="Cursor" Value="Hand"/>
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="Button">
-						<Border Background="{TemplateBinding Background}"
+        
+        <!-- sidebar button style with hover effect -->
+        <Style x:Key="SidebarButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource Beige}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="0"
+                        Padding="{TemplateBinding Padding}">
+                            <ContentPresenter x:Name="contentPresenter"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="{StaticResource MintGreen}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+
+        <!-- new style for TextBlocks inside the SidebarButtons -->
+        <Style x:Key="SidebarButtonTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+        </Style>
+
+
+        <!-- selected sidebar button style -->
+        <Style x:Key="SelectedSidebarButtonStyle" TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
+            <Setter Property="Foreground" Value="{StaticResource MintGreen}"/>
+        </Style>
+        
+        <!-- icon button style for top bar -->
+        <Style x:Key="IconButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource White}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
                                 Padding="{TemplateBinding Padding}">
-							<ContentPresenter/>
-						</Border>
-						<ControlTemplate.Triggers>
-							<Trigger Property="IsMouseOver" Value="True">
-								<Setter Property="Background" Value="{StaticResource LightGray}"/>
-							</Trigger>
-						</ControlTemplate.Triggers>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-		</Style>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource MintGreen}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-		<!-- icon button style for top bar -->
-		<Style x:Key="IconButtonStyle" TargetType="Button">
-			<Setter Property="Background" Value="Transparent"/>
-			<Setter Property="BorderBrush" Value="Transparent"/>
-			<Setter Property="Foreground" Value="{StaticResource White}"/>
-			<Setter Property="HorizontalContentAlignment" Value="Center"/>
-			<Setter Property="Padding" Value="10"/>
-			<Setter Property="FontSize" Value="20"/>
-			<Setter Property="Cursor" Value="Hand"/>
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="Button">
-						<Border Background="{TemplateBinding Background}"
-                                Padding="{TemplateBinding Padding}">
-							<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-						</Border>
-						<ControlTemplate.Triggers>
-							<Trigger Property="IsMouseOver" Value="True">
-								<Setter Property="Background" Value="{StaticResource LightGray}"/>
-							</Trigger>
-						</ControlTemplate.Triggers>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-		</Style>
+        <!-- expander header style -->
+        <Style x:Key="ExpanderHeaderStyle" TargetType="ToggleButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource Beige}"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="border"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        Padding="10">
+                            <ContentPresenter/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-		<!-- expander header style -->
-		<Style x:Key="ExpanderHeaderStyle" TargetType="ToggleButton">
-			<Setter Property="Background" Value="Transparent"/>
-			<Setter Property="BorderBrush" Value="Transparent"/>
-			<Setter Property="Foreground" Value="{StaticResource White}"/>
-			<Setter Property="FontSize" Value="16"/>
-			<Setter Property="Cursor" Value="Hand"/>
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="ToggleButton">
-						<Border Background="{TemplateBinding Background}"
-                                Padding="10">
-							<ContentPresenter />
-						</Border>
-						<ControlTemplate.Triggers>
-							<Trigger Property="IsMouseOver" Value="True">
-								<Setter Property="Background" Value="{StaticResource LightGray}"/>
-							</Trigger>
-						</ControlTemplate.Triggers>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-		</Style>
+        <!-- custom expander style without default arrow -->
+        <Style x:Key="CustomExpanderStyle" TargetType="Expander">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Expander">
+                        <Border Background="Transparent"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                            <StackPanel>
+                                <ToggleButton x:Name="HeaderSite"
+                                    Focusable="False"
+                                    IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Content="{TemplateBinding Header}"
+                                    Style="{StaticResource ExpanderHeaderStyle}"/>
+                                <ContentPresenter x:Name="ExpandSite"
+                                        Visibility="Collapsed"
+                                        ContentSource="Content"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded" Value="True">
+                                <Setter TargetName="ExpandSite" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-		<!-- custom expander style without default arrow -->
-		<Style x:Key="CustomExpanderStyle" TargetType="Expander">
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="Expander">
-						<Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
-							<StackPanel>
-								<ToggleButton x:Name="HeaderSite"
-                                            Focusable="False"
-                                            IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
-                                            Content="{TemplateBinding Header}"
-                                            Style="{StaticResource ExpanderHeaderStyle}"/>
-								<ContentPresenter x:Name="ExpandSite"
-                                                Visibility="Collapsed"
-                                                ContentSource="Content"/>
-							</StackPanel>
-						</Border>
-						<ControlTemplate.Triggers>
-							<Trigger Property="IsExpanded" Value="True">
-								<Setter TargetName="ExpandSite" Property="Visibility" Value="Visible"/>
-							</Trigger>
-						</ControlTemplate.Triggers>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-		</Style>
+        <!-- new style for expander header text -->
+        <Style x:Key="ExpanderHeaderTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource Beige}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ToggleButton}}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource MintGreen}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType=Expander}}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource MintGreen}"/>
+                </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType=Expander}}" Value="True"/>
+                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ToggleButton}}" Value="True"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Foreground" Value="{StaticResource MintGreen}"/>
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
 
-		<!-- rotating arrow style for expanders -->
-		<Style x:Key="ExpanderArrowStyle" TargetType="TextBlock">
-			<Setter Property="RenderTransform">
-				<Setter.Value>
-					<RotateTransform Angle="0"/>
-				</Setter.Value>
-			</Setter>
-			<Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-			<Style.Triggers>
-				<DataTrigger Binding="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType=Expander}}" Value="True">
-					<Setter Property="RenderTransform">
-						<Setter.Value>
-							<RotateTransform Angle="180"/>
-						</Setter.Value>
-					</Setter>
-				</DataTrigger>
-			</Style.Triggers>
-		</Style>
-	</Window.Resources>
+        <!-- rotating arrow style for expanders -->
+        <Style x:Key="ExpanderArrowStyle" TargetType="TextBlock">
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <RotateTransform Angle="0"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="Foreground" Value="{StaticResource Beige}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType=Expander}}" Value="True">
+                    <Setter Property="RenderTransform">
+                        <Setter.Value>
+                            <RotateTransform Angle="180"/>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Foreground" Value="{StaticResource MintGreen}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ToggleButton}}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource MintGreen}"/>
+                </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType=Expander}}" Value="True"/>
+                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ToggleButton}}" Value="True"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Foreground" Value="{StaticResource MintGreen}"/>
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
 
-	<!-- main grid layout -->
-	<Grid>
-		<!-- background image -->
-		<Grid.Background>
-			<ImageBrush ImageSource="/Resources/Images/jujutsu.png"
+    <!-- main grid layout -->
+    <Grid>
+        <!-- background image -->
+        <Grid.Background>
+            <ImageBrush ImageSource="/Resources/Images/athens.jpg"
                         Stretch="UniformToFill"/>
-		</Grid.Background>
+        </Grid.Background>
 
-		<!-- define main layout rows -->
-		<Grid.RowDefinitions>
-			<RowDefinition Height="60"/>
-			<RowDefinition Height="*"/>
-		</Grid.RowDefinitions>
 
-		<!-- top bar -->
-		<Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{StaticResource LightGray}">
-			<DockPanel Background="{StaticResource DarkGray}" LastChildFill="True" Opacity="0.97">
-				<!-- left side content -->
-				<StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,10,0">
-					<TextBlock Text="📂" FontSize="20" Style="{StaticResource DefaultTextBlockStyle}"/>
-					<TextBlock Text=" Gungnir" FontSize="16" Style="{StaticResource DefaultTextBlockStyle}" FontWeight="Bold" Margin="10,0,0,0"/>
-					<TextBlock x:Name="DirectoryText" Text=" | /Home" FontSize="14" Foreground="Gray" Margin="10,0,0,0"/>
-				</StackPanel>
+        <!-- main content area with columns -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-				<!-- right side buttons -->
-				<StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
-					<Button Style="{StaticResource IconButtonStyle}"
-                            ToolTip="YouTube"
-                            Padding="5"
-                            Click="YouTube_Click">
-						<TextBlock Text="▶" Style="{StaticResource DefaultTextBlockStyle}"/>
-					</Button>
-					<Button Style="{StaticResource IconButtonStyle}"
-                            ToolTip="GitHub"
-                            Padding="5"
-                            Click="GitHub_Click">
-						<TextBlock Text="🐱" Style="{StaticResource DefaultTextBlockStyle}"/>
-					</Button>
-					<Button Style="{StaticResource IconButtonStyle}"
-                            ToolTip="LinkedIn"
-                            Padding="5"
-                            Click="LinkedIn_Click">
-						<TextBlock Text="in" Style="{StaticResource DefaultTextBlockStyle}"/>
-					</Button>
-					<Button Style="{StaticResource IconButtonStyle}"
-                            ToolTip="Settings"
-                            Padding="5"
-                            Click="Settings_Click">
-						<TextBlock Text="⚙" Style="{StaticResource DefaultTextBlockStyle}"/>
-					</Button>
-				</StackPanel>
-			</DockPanel>
-		</Border>
+            <!-- left sidebar navigation -->
+            <Border Grid.Column="0"
+					Panel.ZIndex="1" 
+                    Margin="10,10,0,10"
+                    CornerRadius="8"
+                    Effect="{StaticResource SoftShadow}">
+                <Border.Background>
+                    <SolidColorBrush Color="#4A3C31" 
+                                     Opacity="0.6"/>
+                </Border.Background>
 
-		<!-- main content area with three columns -->
-		<Grid Grid.Row="1">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="180"/>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="250"/>
-			</Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-			<!-- left sidebar navigation -->
-			<Border Grid.Column="0"
-                    Background="{StaticResource DarkGray}"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Panel.ZIndex="1"
-                    Opacity="0.97">
-				<Grid>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="*"/>
-					</Grid.RowDefinitions>
+                    <!-- navigation buttons -->
+                    <StackPanel Grid.Row="0"
+                                Margin="0,0,0,10">
 
-					<!-- navigation buttons -->
-					<StackPanel Grid.Row="0" Margin="0,10,0,10">
-						<!-- dashboard button -->
-						<Button Style="{StaticResource SidebarButtonStyle}" Click="NavigateHome_Click">
-							<Grid>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="30"/>
-									<ColumnDefinition Width="*"/>
-								</Grid.ColumnDefinitions>
-								<TextBlock Text="☰" FontSize="16" Style="{StaticResource DefaultTextBlockStyle}"
-                                         VerticalAlignment="Center" HorizontalAlignment="Center"/>
-								<TextBlock Text="Dashboard" Grid.Column="1" FontSize="16"
-                                         FontFamily="Segoe UI" VerticalAlignment="Center"/>
-							</Grid>
-						</Button>
+                        <!-- dashboard button -->
+                        <Button Style="{StaticResource SidebarButtonStyle}" 
+                                Click="NavigateHome_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="☰"
+                                           FontSize="25" 
+                                           Grid.Column="0"
+                                           Style="{StaticResource SidebarButtonTextBlockStyle}"
+                                           VerticalAlignment="Center"                                       
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Text="Dashboard" 
+                                           Margin="-10,0,0,0"
+                                           Grid.Column="1"
+                                           FontSize="23"
+                                           FontWeight="Bold"                                        
+                                           Style="{StaticResource SidebarButtonTextBlockStyle}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Button>
 
-						<!-- add section expander -->
-						<Expander x:Name="AddExpander" ExpandDirection="Down" Style="{StaticResource CustomExpanderStyle}">
-							<!-- expander header -->
-							<Expander.Header>
-								<Grid>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="30"/>
-										<ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="30"/>
-									</Grid.ColumnDefinitions>
-									<TextBlock Text="➕" FontSize="16" Style="{StaticResource DefaultTextBlockStyle}"
-                                             VerticalAlignment="Center" HorizontalAlignment="Center"/>
-									<TextBlock Text="Add" Grid.Column="1" Style="{StaticResource DefaultTextBlockStyle}"
-                                             VerticalAlignment="Center"/>
-									<TextBlock Text="▼" Grid.Column="2" FontSize="12" Style="{StaticResource ExpanderArrowStyle}"
-                                             VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
-								</Grid>
-							</Expander.Header>
-							<!-- add options -->
-							<StackPanel Background="{StaticResource MediumLightGray}">
-								<Button Style="{StaticResource SidebarButtonStyle}" Click="NavigateAddOption1_Click">
-									<TextBlock Text="Add College" Margin="30,0,0,0" Style="{StaticResource DefaultTextBlockStyle}"/>
-								</Button>
-								<Button Style="{StaticResource SidebarButtonStyle}" Click="NavigateAddOption2_Click">
-									<TextBlock Text="Add Program" Margin="30,0,0,0" Style="{StaticResource DefaultTextBlockStyle}"/>
-								</Button>
-								<Button Style="{StaticResource SidebarButtonStyle}" Click="NavigateAddOption3_Click">
-									<TextBlock Text="Add Student" Margin="30,0,0,0" Style="{StaticResource DefaultTextBlockStyle}"/>
-								</Button>
-							</StackPanel>
-						</Expander>
+                        <!-- add section expander -->
+                        <Expander x:Name="AddExpander" 
+                                  ExpandDirection="Down" 
+                                  Style="{StaticResource CustomExpanderStyle}">
 
-						<!-- view section expander -->
-						<Expander x:Name="ViewExpander" ExpandDirection="Down" Style="{StaticResource CustomExpanderStyle}">
-							<!-- expander header -->
-							<Expander.Header>
-								<Grid>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="30"/>
-										<ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="30"/>
-									</Grid.ColumnDefinitions>
-									<TextBlock Text="📄" FontSize="16" Style="{StaticResource DefaultTextBlockStyle}"
-                                             VerticalAlignment="Center" HorizontalAlignment="Center"/>
-									<TextBlock Text="View" Grid.Column="1" Style="{StaticResource DefaultTextBlockStyle}"
-                                             VerticalAlignment="Center"/>
-									<TextBlock Text="▼" Grid.Column="2" FontSize="12" Style="{StaticResource ExpanderArrowStyle}"
-                                             VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
-								</Grid>
-							</Expander.Header>
-							<!-- view options -->
-							<StackPanel Background="{StaticResource MediumLightGray}">
-								<Button Style="{StaticResource SidebarButtonStyle}" Click="NavigateViewOption1_Click">
-									<TextBlock Text="View College List" Margin="30,0,0,0" Style="{StaticResource DefaultTextBlockStyle}"/>
-								</Button>
-								<Button Style="{StaticResource SidebarButtonStyle}" Click="NavigateViewOption2_Click">
-									<TextBlock Text="View Program List" Margin="30,0,0,0" Style="{StaticResource DefaultTextBlockStyle}"/>
-								</Button>
-								<Button Style="{StaticResource SidebarButtonStyle}" Click="NavigateViewOption3_Click">
-									<TextBlock Text="View Student List" Margin="30,0,0,0" Style="{StaticResource DefaultTextBlockStyle}"/>
-								</Button>
-							</StackPanel>
-						</Expander>
+                            <!-- expander header -->
+                            <Expander.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="30"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Add"                                              
+                                               FontSize="20" 
+                                               Grid.Column="0"
+                                               Style="{StaticResource ExpanderHeaderTextStyle}"
+                                               VerticalAlignment="Center" 
+                                               Margin="10,0,0,0"/>
+                                    <TextBlock Text="▼"
+                                               Grid.Column="1"
+                                               FontSize="12" 
+                                               Style="{StaticResource ExpanderArrowStyle}"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"/>
+                                </Grid>
+                            </Expander.Header>
 
-						<!-- history button -->
-						<Button Style="{StaticResource SidebarButtonStyle}" Click="NavigateHistory_Click">
-							<Grid>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="30"/>
-									<ColumnDefinition Width="*"/>
-								</Grid.ColumnDefinitions>
-								<TextBlock Text="📜" FontSize="16" Style="{StaticResource DefaultTextBlockStyle}"
-                                         VerticalAlignment="Center" HorizontalAlignment="Center"/>
-								<TextBlock Text="History" Grid.Column="1" Style="{StaticResource DefaultTextBlockStyle}"
-                                         VerticalAlignment="Center"/>
-							</Grid>
-						</Button>
+                            <!-- add options -->
+                            <StackPanel>
+                                <Button x:Name="AddCollegeButton"
+                                        Tag="AddCollege"
+                                        Style="{StaticResource SidebarButtonStyle}" 
+                                        Click="NavigateAddOption1_Click">
+                                    <TextBlock Text="Add College" 
+                                               Margin="15,0,0,0"
+                                               FontSize="18"
+                                               Style="{StaticResource SidebarButtonTextBlockStyle}"/>   
+                                </Button>
+                                <Button x:Name="AddProgramButton"
+                                        Tag="AddProgram"
+                                        Style="{StaticResource SidebarButtonStyle}" 
+                                        Click="NavigateAddOption2_Click">
+                                    <TextBlock Text="Add Program" 
+                                               Margin="15,0,0,0"
+                                               FontSize="18"
+                                               Style="{StaticResource SidebarButtonTextBlockStyle}"/>
+                                </Button>
+                                <Button x:Name="AddStudentButton"
+                                        Tag="AddStudent"
+                                        Style="{StaticResource SidebarButtonStyle}" 
+                                        Click="NavigateAddOption3_Click">
+                                    <TextBlock Text="Add Student" 
+                                               Margin="15,0,0,0"
+                                               FontSize="18"
+                                               Style="{StaticResource SidebarButtonTextBlockStyle}"/>
+                                </Button>
+                            </StackPanel>
+                        </Expander>
 
-						<!-- about button -->
-						<Button Style="{StaticResource SidebarButtonStyle}" Click="NavigateAbout_Click">
-							<Grid>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="30"/>
-									<ColumnDefinition Width="*"/>
-								</Grid.ColumnDefinitions>
-								<TextBlock Text="ℹ️" FontSize="16" Style="{StaticResource DefaultTextBlockStyle}"
-                                         VerticalAlignment="Center" HorizontalAlignment="Center"/>
-								<TextBlock Text="About" Grid.Column="1" Style="{StaticResource DefaultTextBlockStyle}"
-                                         VerticalAlignment="Center"/>
-							</Grid>
-						</Button>
-					</StackPanel>
-				</Grid>
-			</Border>
+                        <!-- view section expander -->
+                        <Expander x:Name="ViewExpander" 
+                                  ExpandDirection="Down" 
+                                  Style="{StaticResource CustomExpanderStyle}">
 
-			<!-- main content area -->
-			<Grid Grid.Column="1">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="*"/>
-					<RowDefinition Height="43"/>
-				</Grid.RowDefinitions>
+                            <!-- expander header -->
+                            <Expander.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="30"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="View" 
+                                               Grid.Column="0" 
+                                               FontSize="20" 
+                                               Margin="10,0,0,0" 
+                                               Style="{StaticResource ExpanderHeaderTextStyle}"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Text="▼" 
+                                               Grid.Column="1" 
+                                               FontSize="12" 
+                                               Style="{StaticResource ExpanderArrowStyle}"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"/>
+                                </Grid>
+                            </Expander.Header>
 
-				<!-- content background -->
-				<Border Grid.RowSpan="2"
-                        Background="{StaticResource DarkGray}"
-                        Opacity="0.97"/>
+                            <!-- view options -->
+                            <StackPanel>
+                                <Button x:Name="ViewCollegeListButton"
+                                        Tag="ViewCollegeList"
+                                        Style="{StaticResource SidebarButtonStyle}" 
+                                        Click="NavigateViewOption1_Click">
+                                    <TextBlock Text="View College List"
+                                               Margin="15,0,0,0" 
+                                               FontSize="18"
+                                               Style="{StaticResource SidebarButtonTextBlockStyle}"/>
+                                </Button>
+                                <Button x:Name="ViewProgramListButton"
+                                        Tag="ViewProgramList"
+                                        Style="{StaticResource SidebarButtonStyle}" 
+                                        Click="NavigateViewOption2_Click">
+                                    <TextBlock Text="View Program List" 
+                                               Margin="15,0,0,0" 
+                                               FontSize="18"
+                                               Style="{StaticResource SidebarButtonTextBlockStyle}"/>
+                                </Button>
+                                <Button x:Name="ViewStudentListButton"
+                                        Tag="ViewStudentList"
+                                        Style="{StaticResource SidebarButtonStyle}" 
+                                        Click="NavigateViewOption3_Click">
+                                    <TextBlock Text="View Student List" 
+                                               Margin="15,0,0,0" 
+                                               FontSize="18"
+                                               Style="{StaticResource SidebarButtonTextBlockStyle}"/>
+                                </Button>
+                            </StackPanel>
+                        </Expander>
 
-				<!-- main content -->
-				<Border Grid.Row="0"
-                        Background="{StaticResource DarkGray}"
-                        BorderBrush="{StaticResource LightGray}"
-                        BorderThickness="1,1,1,1"
-                        Margin="0,10,0,0"
-                        Opacity="0.9">
-					<ContentControl Name="MainContent"
+                        <!-- history button -->
+                        <Button x:Name="ViewHistoryButton"
+                                Tag="ViewHistory"                     
+                                Style="{StaticResource SidebarButtonStyle}" 
+                                Click="NavigateHistory_Click">
+                            <Grid>
+                                <TextBlock Text="History" 
+                                           FontSize="20" 
+                                           Margin="10,0,0,0" 
+                                           Style="{StaticResource SidebarButtonTextBlockStyle}"
+                                           VerticalAlignment="Center"/> 
+                            </Grid>
+                        </Button>
+
+                        <!-- about button -->
+                        <Button x:Name="ViewSettingsButton"
+                                Tag="ViewSettings"
+                                Style="{StaticResource SidebarButtonStyle}" 
+                                Click="NavigateSettings_Click">
+                            <Grid>
+                                <TextBlock Text="Settings" 
+                                           Margin="10,0,0,0" 
+                                           FontSize="20"
+                                           Style="{StaticResource SidebarButtonTextBlockStyle}"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Button>
+                    </StackPanel>
+
+                    <!-- Status information -->                  
+                    <StackPanel Grid.Row="1"
+                                Orientation="Horizontal"
+                                Margin="10,0,0,5">
+                        <TextBlock x:Name="DirectoryText"
+                                   Text="/Home"
+                                   FontSize="12"
+                                   Margin="5,0,0,0"
+                                   Foreground="{StaticResource Beige}"
+                                   Style="{StaticResource BaseTextBlockStyle}"/>
+                    </StackPanel>
+
+                    <!-- icon buttons-->
+                    <StackPanel Grid.Row="2"
+                                Orientation="Horizontal"
+                                Margin="10,0,0,5">
+
+                        <Button Style="{StaticResource IconButtonStyle}"
+                                ToolTip="YouTube"
+                                Padding="5"
+                                Click="YouTube_Click">
+                            <TextBlock Text="▶" 
+                                    Style="{StaticResource BaseTextBlockStyle}"/>
+                        </Button>
+
+                        <Button Style="{StaticResource IconButtonStyle}"
+                                ToolTip="GitHub"
+                                Padding="5"
+                                Click="GitHub_Click">
+                            <TextBlock Text="🐱" 
+                                    Style="{StaticResource BaseTextBlockStyle}"/>
+                        </Button>
+
+                        <Button Style="{StaticResource IconButtonStyle}"
+                                ToolTip="LinkedIn"
+                                Padding="5" 
+                                Click="LinkedIn_Click">
+                            <TextBlock Text="in" 
+                                    Style="{StaticResource BaseTextBlockStyle}"/>
+                        </Button>
+
+                        <Button Style="{StaticResource IconButtonStyle}"
+                                ToolTip="Settings"
+                                Padding="5"
+                                Click="Settings_Click">
+                            <TextBlock Text="⚙" 
+                                    Style="{StaticResource BaseTextBlockStyle}"/>
+                        </Button>
+
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="3"
+                                Orientation="Horizontal"
+                                Margin="15,0,0,20">
+                        <TextBlock Text="Logged in as: "
+                                   Style="{StaticResource BaseTextBlockStyle}"
+                                   FontSize="12"
+                                   Foreground="{StaticResource Beige}"/>
+                        <TextBlock x:Name="LoginStatus"
+                                   Style="{StaticResource BaseTextBlockStyle}"
+                                   FontSize="12"
+                                   Margin="0,0,10,0"
+                                   Foreground="Gray"/>
+                        <TextBlock Text="Status: "
+                                   Style="{StaticResource BaseTextBlockStyle}"
+                                   FontSize="12"
+                                   Foreground="{StaticResource Beige}"/>
+                        <TextBlock Text="Ready"   Foreground="Gray"        
+                                   Style="{StaticResource BaseTextBlockStyle}"
+                                   FontSize="12"/>
+
+                    </StackPanel>
+
+                </Grid>
+            </Border>
+
+            <!-- main content area -->
+            <Grid Grid.Column="1">
+
+                <!-- main content -->
+                <Border Grid.Row="0"
+                        Margin="10,10,10,10"
+                        CornerRadius="8"
+                        Effect="{StaticResource SoftShadow}">
+                    <Border.Background>
+                        <SolidColorBrush Color="#4A3C31"
+                                         Opacity="0.6"/>
+                    </Border.Background>
+                    <ContentControl Name="MainContent"
                                   VerticalAlignment="Center"
                                   HorizontalAlignment="Center"
                                   FontSize="20"
                                   Foreground="Black"/>
-				</Border>
+                </Border>
 
-				<!-- status bar -->
-				<Border Grid.Row="1"
-                        BorderThickness="0,0,0,0"
-                        BorderBrush="{StaticResource LightGray}">
-					<DockPanel LastChildFill="True">
-						<StackPanel Orientation="Horizontal"
-                                  VerticalAlignment="Center"
-                                  Margin="0,0,0,0">
-							<TextBlock Text="Logged in as: "
-                                     Style="{StaticResource DefaultTextBlockStyle}"
-                                     FontSize="12"/>
-							<TextBlock x:Name="LoginStatus"
-                                     Style="{StaticResource DefaultTextBlockStyle}"
-                                     FontSize="12"
-                                     Foreground="Gray"/>
-							<TextBlock Text=" | "
-                                     Style="{StaticResource DefaultTextBlockStyle}"
-                                     FontSize="12"
-                                     Foreground="Gray"
-                                     Margin="5,0"/>
-							<TextBlock Text="Status: "
-                                     Style="{StaticResource DefaultTextBlockStyle}"
-                                     FontSize="12"/>
-							<TextBlock Text="Ready"
-                                     Foreground="Gray"
-                                     Style="{StaticResource DefaultTextBlockStyle}"
-                                     FontSize="12"/>
-						</StackPanel>
-					</DockPanel>
-				</Border>
-			</Grid>
+            </Grid>
 
-			<!-- right profile panel -->
-			<Border Grid.Column="2"
-                    Background="{StaticResource DarkGray}"
-                    Padding="10"
-                    Opacity="0.97"
-                    BorderBrush="{StaticResource LightGray}"
-                    BorderThickness="0,0,0,0">
-				<StackPanel>
-					<!-- profile display -->
-					<Border BorderBrush="{StaticResource LightGray}" BorderThickness="1" Padding="10" Margin="0,0,0,10">
-						<StackPanel HorizontalAlignment="Center">
-							<Ellipse Width="70" Height="70" Fill="{StaticResource PrimaryColor}"/>
-							<TextBlock x:Name="ProfileName" Style="{StaticResource DefaultTextBlockStyle}"
-                                     Text="User Name" FontSize="16" FontWeight="Bold" Margin="0,10,0,0"
-                                     VerticalAlignment="Center" HorizontalAlignment="Center"/>
-						</StackPanel>
-					</Border>
-					<!-- updates section -->
-					<Border BorderBrush="{StaticResource LightGray}" BorderThickness="1" Height="314" Padding="10">
-						<TextBlock Text="Real-time updates will appear here soon..."
-                                 Style="{StaticResource DefaultTextBlockStyle}" TextWrapping="Wrap"/>
-					</Border>
-				</StackPanel>
-			</Border>
-		</Grid>
-	</Grid>
+        </Grid>
+    </Grid>
 </Window>

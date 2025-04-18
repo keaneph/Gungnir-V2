@@ -11,12 +11,21 @@
 
   <ItemGroup>
     <None Remove="himalayas dark.jpg" />
+    <None Remove="Resources\Images\allegory.jpg" />
+    <None Remove="Resources\Images\athens.jpg" />
+    <None Remove="Resources\Images\giovanni.jpg" />
     <None Remove="Resources\Images\jujutsu.png" />
     <None Remove="Resources\Images\wp5.jpg" />
     <None Remove="lamp posts.jpg" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\allegory.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\athens.jpg" />
+    <Resource Include="Resources\Images\giovanni.jpg" />
     <Resource Include="Resources\Images\himalayas dark.jpg" />
     <Resource Include="Resources\Images\jujutsu.png" />
     <Resource Include="Resources\Images\lamp posts.jpg" />

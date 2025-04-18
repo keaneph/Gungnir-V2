@@ -4,9 +4,9 @@ using System.Windows.Navigation;
 
 namespace sis_app.Views
 {
-    public partial class AboutView : UserControl
+    public partial class SettingsView : UserControl
     {
-        public AboutView()
+        public SettingsView()
         {
             InitializeComponent();
         }

@@ -91,11 +91,26 @@ namespace sis_app.Views
             _viewStudentControl = new ViewStudentControl(_studentDataService, _programDataService, _collegeDataService);
         }
 
+        private void SetSelectedButton(Button selectedButton)
+        {
+            // Reset all buttons to default style
+            AddCollegeButton.Style = (Style)FindResource("SidebarButtonStyle");
+            AddProgramButton.Style = (Style)FindResource("SidebarButtonStyle");
+            AddStudentButton.Style = (Style)FindResource("SidebarButtonStyle");
+            ViewCollegeListButton.Style = (Style)FindResource("SidebarButtonStyle");
+            ViewProgramListButton.Style = (Style)FindResource("SidebarButtonStyle");
+            ViewStudentListButton.Style = (Style)FindResource("SidebarButtonStyle");
+            ViewHistoryButton.Style = (Style)FindResource("SidebarButtonStyle");
+            ViewSettingsButton.Style = (Style)FindResource("SidebarButtonStyle");
+
+            // Set selected button to selected style
+            selectedButton.Style = (Style)FindResource("SelectedSidebarButtonStyle");
+        }
+
         // setup initial UI state
         private void InitializeUserInterface()
         {
             LoginStatus.Text = CurrentUser;
-            ProfileName.Text = CurrentUser;
             MainContent.Content = _dashboardView;
             UpdateDirectory("Home");
         }
@@ -114,7 +129,7 @@ namespace sis_app.Views
         // update directory path display
         private void UpdateDirectory(string page)
         {
-            DirectoryText.Text = $" | /{page}";
+            DirectoryText.Text = $"/{page}";
         }
 
         // navigation event handlers
@@ -127,6 +142,7 @@ namespace sis_app.Views
         private void NavigateAddOption1_Click(object sender, RoutedEventArgs e)
         {
             MainContent.Content = _addCollegeControl;
+            SetSelectedButton(sender as Button);
             UpdateDirectory("Add/College");
         }
 
@@ -134,6 +150,7 @@ namespace sis_app.Views
         {
             _addProgramControl.LoadCollegeCodes();
             MainContent.Content = _addProgramControl;
+            SetSelectedButton(sender as Button);
             UpdateDirectory("Add/Program");
         }
 
@@ -141,6 +158,7 @@ namespace sis_app.Views
         {
             _addStudentControl.LoadProgramCodes();
             MainContent.Content = _addStudentControl;
+            SetSelectedButton(sender as Button);
             UpdateDirectory("Add/Student");
         }
 
@@ -148,6 +166,7 @@ namespace sis_app.Views
         {
             _viewCollegesControl.LoadColleges();
             MainContent.Content = _viewCollegesControl;
+            SetSelectedButton(sender as Button);
             UpdateDirectory("View/Colleges");
         }
 
@@ -155,6 +174,7 @@ namespace sis_app.Views
         {
             _viewProgramsControl.LoadPrograms();
             MainContent.Content = _viewProgramsControl;
+            SetSelectedButton(sender as Button);
             UpdateDirectory("View/Programs");
         }
 
@@ -162,18 +182,21 @@ namespace sis_app.Views
         {
             _viewStudentControl.LoadStudents();
             MainContent.Content = _viewStudentControl;
+            SetSelectedButton(sender as Button);
             UpdateDirectory("View/Students");
         }
 
-        private void NavigateAbout_Click(object sender, RoutedEventArgs e)
+        private void NavigateSettings_Click(object sender, RoutedEventArgs e)
         {
-            MainContent.Content = new AboutView();
-            UpdateDirectory("About");
+            MainContent.Content = new SettingsView();
+            SetSelectedButton(sender as Button);
+            UpdateDirectory("Settings");
         }
 
         private void NavigateHistory_Click(object sender, RoutedEventArgs e)
         {
             MainContent.Content = new HistoryView();
+            SetSelectedButton(sender as Button);
             UpdateDirectory("History");
         }
 
