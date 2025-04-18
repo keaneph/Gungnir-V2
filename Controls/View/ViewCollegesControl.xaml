@@ -5,18 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:sis_app.Controls.View"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="800" d:DesignWidth="1350">
     <!-- main grid container -->
     <Grid>
         <!-- centered border with rounded corners -->
-        <Border HorizontalAlignment="Center" 
-                VerticalAlignment="Center"
-                Width="600" 
+        <Border HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch"
+                Margin="20"
                 CornerRadius="15" 
-                Padding="0,10,0,15">
+                Padding="20">
 
             <!-- main content grid -->
-            <Grid Margin="20">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
@@ -33,7 +33,8 @@
                     <!-- search box -->
                     <TextBox x:Name="SearchBox" 
                      Grid.Column="0"
-                     Margin="-90,0,0,0"
+                     Width="400"
+                     HorizontalAlignment="Left"
                      Style="{StaticResource SearchBoxStyle}"
                      TextChanged="SearchBox_TextChanged"/>
 
@@ -61,7 +62,7 @@
                     <ListView.View>
                         <GridView>
                             <!-- college name column -->
-                            <GridViewColumn Header="College Name" Width="200" >
+                            <GridViewColumn Header="College Name" Width="500">
                                 <GridViewColumn.HeaderContainerStyle>
                                     <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource HeaderStyle}"/>
                                 </GridViewColumn.HeaderContainerStyle>
@@ -70,13 +71,13 @@
                                         <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                                                  IsEnabled="{Binding ElementName=EditModeToggleButton, Path=IsChecked}"
                                                  Style="{StaticResource TableCellTextBoxStyle}"
-                                                 Width="{Binding Width, RelativeSource={RelativeSource AncestorType=GridViewColumn}}"/>
+                                                 Width="480"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
                             <!-- college code column -->
-                            <GridViewColumn Header="College Code" Width="100">
+                            <GridViewColumn Header="College Code" Width="300">
                                 <GridViewColumn.HeaderContainerStyle>
                                     <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource HeaderStyle}"/>
                                 </GridViewColumn.HeaderContainerStyle>
@@ -85,7 +86,7 @@
                                         <TextBox Text="{Binding Code, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                                                  IsEnabled="{Binding ElementName=EditModeToggleButton, Path=IsChecked}"
                                                  Style="{StaticResource TableCellTextBoxStyle}"
-                                                 Width="{Binding Width, RelativeSource={RelativeSource AncestorType=GridViewColumn}}"
+                                                 Width="280"
                                                  PreviewTextInput="CollegeCodeTextBox_PreviewTextInput"
                                                  TextChanged="CollegeCodeTextBox_TextChanged"/>
                                     </DataTemplate>
@@ -93,7 +94,7 @@
                             </GridViewColumn>
 
                             <!-- date and time column -->
-                            <GridViewColumn Header="Date and Time" Width="150">
+                            <GridViewColumn Header="Date and Time" Width="300">
                                 <GridViewColumn.HeaderContainerStyle>
                                     <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource HeaderStyle}"/>
                                 </GridViewColumn.HeaderContainerStyle>
@@ -101,13 +102,13 @@
                                     <DataTemplate>
                                         <TextBlock Text="{Binding DateTime}" 
                                                    Style="{StaticResource TableCellStyle}"
-                                                   Width="{Binding Width, RelativeSource={RelativeSource AncestorType=GridViewColumn}}"/>
+                                                   Width="280"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
                             <!-- user column -->
-                            <GridViewColumn Header="User" Width="100">
+                            <GridViewColumn Header="User" Width="200">
                                 <GridViewColumn.HeaderContainerStyle>
                                     <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource HeaderStyle}"/>
                                 </GridViewColumn.HeaderContainerStyle>
@@ -115,7 +116,7 @@
                                     <DataTemplate>
                                         <TextBlock Text="{Binding User}" 
                                                    Style="{StaticResource TableCellStyle}"
-                                                   Width="100"/>
+                                                   Width="180"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

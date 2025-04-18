@@ -37,8 +37,7 @@
         <Setter Property="Height" Value="35"/>
         <Setter Property="Margin" Value="0,5,0,15"/>
         <Setter Property="Foreground" Value="{StaticResource Beige}"/>
-        <Setter Property="Background" Value="{StaticResource MediumLightGray}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource LightGray}"/>
+        <Setter Property="Background" Value="{StaticResource DarkBrown}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="10,5"/>
     </Style>
@@ -50,9 +49,8 @@
         <Setter Property="Margin" Value="5"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="FontFamily" Value="Segoe UI"/>
-        <Setter Property="Foreground" Value="{StaticResource Beige}"/>
-        <Setter Property="Background" Value="{StaticResource MediumLightGray}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource LightGray}"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkBrown}"/>
+        <Setter Property="Background" Value="{StaticResource Beige}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="10,5"/>
     </Style>
@@ -64,121 +62,123 @@
         <Setter Property="Margin" Value="5"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="FontFamily" Value="Segoe UI"/>
-        <Setter Property="Foreground" Value="{StaticResource White}"/>
-        <Setter Property="Background" Value="{StaticResource MediumLightGray}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource LightGray}"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkBrown}"/>
+        <Setter Property="Background" Value="{StaticResource Beige}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="10,5"/>
-        <!-- value set to auto means if dropdown content is few, scrollbar won't be visible-->
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-
-        <!-- adding this for smoother scrolling i think -->
-        <!-- debating whether to choose pixel scrolling or content scrolling, both are nice-->
         <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
         <Setter Property="MaxDropDownHeight" Value="80"/>
+
+        <!-- Add ItemContainerStyle for ComboBoxItem styling -->
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="ComboBoxItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ComboBoxItem">
+                                <Border x:Name="Border"
+                                    Padding="5,3"
+                                    Background="Transparent">
+                                    <ContentPresenter />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" TargetName="Border" Value="{StaticResource MintGreen}"/>
+                                        <Setter Property="Foreground" Value="{StaticResource Beige}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" TargetName="Border" Value="{StaticResource MintGreen}"/>
+                                        <Setter Property="Foreground" Value="{StaticResource Beige}"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Setter.Value>
+        </Setter>
+
         <Setter Property="Template">
             <Setter.Value>
                 <!-- main combobox template -->
                 <ControlTemplate TargetType="ComboBox">
                     <Grid>
                         <!-- main button part of the comboBox -->
-                        <!-- binds the button's checked state to the dropdown's open state -->
                         <ToggleButton x:Name="ToggleButton"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            Background="{TemplateBinding Background}"
-                            IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                            Padding="{TemplateBinding Padding}">
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        Background="{TemplateBinding Background}"
+                        IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                        Padding="{TemplateBinding Padding}">
 
                             <!-- custom template for the togglebutton -->
                             <ToggleButton.Template>
                                 <ControlTemplate TargetType="ToggleButton">
-                                    <!-- border container for the button -->
                                     <Border x:Name="Border" 
-                                    Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="1">
-                                        <!-- grid to organize button contents -->
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1">
                                         <Grid>
-                                            <!-- two columns: one for content, one for arrow -->
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
-                                                <!-- takes remaining space -->
                                                 <ColumnDefinition Width="Auto"/>
-                                                <!-- only as wide as needed -->
                                             </Grid.ColumnDefinitions>
 
-                                            <!-- content area (selected item) -->
                                             <ContentPresenter Grid.Column="0"
-                                                              Margin="5,0,0,0"
-                                                              VerticalAlignment="Center"/>
+                                                          Margin="5,0,0,0"
+                                                          VerticalAlignment="Center"/>
 
-                                            <!-- dropdown arrow symbol -->
-                                            <!-- creates triangle shape -->
                                             <Path x:Name="Arrow"
-                                                  Grid.Column="1"
-                                                  Fill="{StaticResource White}"
-                                                  HorizontalAlignment="Center"
-                                                  VerticalAlignment="Center"
-                                                  Data="M0,0 L8,0 L4,4 Z"   
-                                                  Margin="0,0,5,0"/>
+                                              Grid.Column="1"
+                                              Fill="{StaticResource Beige}"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Data="M0,0 L8,0 L4,4 Z"   
+                                              Margin="0,0,5,0"/>
                                         </Grid>
                                     </Border>
 
-                                    <!-- visual state triggers -->
                                     <ControlTemplate.Triggers>
-                                        <!-- changes background on mouse hover -->
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="{StaticResource LightGray}"
-                                            TargetName="Border"/>
+                                            <Setter Property="Background" Value="#EBEBD2"
+                                        TargetName="Border"/>
                                         </Trigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </ToggleButton.Template>
                         </ToggleButton>
 
-                        <!-- displays the selected item in the combobox -->
                         <ContentPresenter
-                            Content="{TemplateBinding SelectionBoxItem}"
-                            ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                            ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Left"
-                            Margin="12,0,0,0"/>
+                        Content="{TemplateBinding SelectionBoxItem}"
+                        ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                        ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        Margin="12,0,0,0"/>
 
-                        <!-- popup that shows the dropdown list -->
-                        <!-- controls when dropdown appears -->
                         <Popup x:Name="Popup"
-                               AllowsTransparency="True"
-                               IsOpen="{TemplateBinding IsDropDownOpen}"    
-                               Placement="Bottom"
-                            
-                            PopupAnimation="Slide">
-                            <!-- places dropdown below combobox -->
+                           AllowsTransparency="True"
+                           IsOpen="{TemplateBinding IsDropDownOpen}"    
+                           Placement="Bottom"
+                           PopupAnimation="Slide">
 
-                            <!-- dropdown container -->
-                            <!-- makes dropdown at least as wide as combobox -->
                             <Grid x:Name="DropDown"
-                                  Background="{StaticResource MediumLightGray}"
-                                  MinWidth="{TemplateBinding ActualWidth}"        
-                                  MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                <!-- limits dropdown height -->
+                              Background="{StaticResource Beige}"
+                              MinWidth="{TemplateBinding ActualWidth}"        
+                              MaxHeight="{TemplateBinding MaxDropDownHeight}">
 
-                                <!-- border around dropdown -->
                                 <Border x:Name="DropDownBorder"
-                                BorderBrush="{StaticResource LightGray}"
-                                BorderThickness="1"/>
+                            BorderBrush="{StaticResource LightGray}"
+                            BorderThickness="0"/>
 
-                                <!-- scrollable area for dropdown items -->
                                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                    <!-- custom scrollbar styling -->
                                     <ScrollViewer.Resources>
                                         <Style TargetType="ScrollBar">
-                                            <Setter Property="Background" Value="{StaticResource White}"/>
-                                            <Setter Property="Foreground" Value="{StaticResource MediumLightGray}"/>
+                                            <Setter Property="Background" Value="{StaticResource Beige}"/>
+                                            <Setter Property="Foreground" Value="{StaticResource MintGreen}"/>
                                         </Style>
                                     </ScrollViewer.Resources>
 
-                                    <!-- container for ComboBox items -->
                                     <StackPanel IsItemsHost="True"/>
                                 </ScrollViewer>
                             </Grid>
@@ -191,15 +191,15 @@
 
     <!-- add button style -->
     <Style x:Key="AddButtonStyle" TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource Purple}"/>
-        <Setter Property="Foreground" Value="{StaticResource White}"/>
+        <Setter Property="Background" Value="{StaticResource Peru}"/>
+        <Setter Property="Foreground" Value="{StaticResource Beige}"/>
         <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Height" Value="25"/>
         <Setter Property="Padding" Value="8,3"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="BorderBrush" Value="{StaticResource LightGray}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -212,7 +212,7 @@
                     <ControlTemplate.Triggers>
                         <!-- when mouse hovers over the item -->
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#333333"/>
+                            <Setter Property="Background" Value="#96632F"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -289,7 +289,7 @@
 
     <!-- register button style with hover effect -->
     <Style x:Key="RegisterButtonStyle" TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource MintGreen}"/>
+        <Setter Property="Background" Value="{StaticResource Purple}"/>
         <Setter Property="Foreground" Value="{StaticResource Beige}"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Padding" Value="8,3"/>
@@ -307,7 +307,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#5A805A"/>
+                            <Setter Property="Background" Value="#5040B8"/>
                             
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -394,9 +394,8 @@
         <Setter Property="Margin" Value="5"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="FontFamily" Value="Segoe UI"/>
-        <Setter Property="Foreground" Value="{StaticResource White}"/>
-        <Setter Property="Background" Value="{StaticResource MediumLightGray}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource LightGray}"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkBrown}"/>
+        <Setter Property="Background" Value="{StaticResource Beige}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="10,5"/>
         <!-- value set to auto means if dropdown content is few, scrollbar won't be visible-->
@@ -500,8 +499,8 @@
                                     <!-- custom scrollbar styling -->
                                     <ScrollViewer.Resources>
                                         <Style TargetType="ScrollBar">
-                                            <Setter Property="Background" Value="{StaticResource White}"/>
-                                            <Setter Property="Foreground" Value="{StaticResource MediumLightGray}"/>
+                                            <Setter Property="Background" Value="{StaticResource Beige}"/>
+                                            <Setter Property="Foreground" Value="{StaticResource DarkBrown}"/>
                                         </Style>
                                     </ScrollViewer.Resources>
 

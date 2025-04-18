@@ -38,7 +38,7 @@
                     <TextBox x:Name="ProgramNameTextBox" 
                             Style="{StaticResource BaseTextBoxStyle}"
                             Height="30"
-                            PreviewTextInput="ProgramNameTextBox_PreviewTextInput"/>
+                            PreviewTextInput="ProgramNameTextBox_PreviewTextInput" TextChanged="ProgramNameTextBox_TextChanged_1"/>
                 </StackPanel>
 
                 <!-- program code input section -->
@@ -65,7 +65,9 @@
                               HorizontalAlignment="Left"/>
                     <!-- college code dropdown -->
                     <ComboBox x:Name="CollegeCodeComboBox" 
-                             Style="{StaticResource BaseComboBoxStyle}"/>
+                              Background="{StaticResource Beige}"
+                              Foreground="{StaticResource DarkBrown}"
+                              Style="{StaticResource BaseComboBoxStyle}"/>
                 </StackPanel>
 
                 <!-- submit button -->

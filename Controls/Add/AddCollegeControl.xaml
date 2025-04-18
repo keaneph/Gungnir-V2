@@ -9,63 +9,78 @@
 
     <!-- main grid container -->
     <Grid>
-        <!-- centered border with rounded corners -->
-        <Border HorizontalAlignment="Center" 
-                VerticalAlignment="Center"
-                Width="400" 
-                CornerRadius="15" 
-                Padding="0,10,0,15" 
-                Opacity="0.95">
+        
+        
+        <!-- Grid for background and content separation -->
+        <Grid HorizontalAlignment="Center" 
+              VerticalAlignment="Center" 
+              Width="400">
 
-            <!-- main content stack panel -->
-            <StackPanel Margin="20">
-                <!-- header text -->
-                <TextBlock Text="Add College" 
-                          FontSize="24" 
-                          FontWeight="Bold" 
-                          Style="{StaticResource BaseTextBlockStyle}"
-                          Margin="0,10,0,0" 
-                          HorizontalAlignment="Center"/>
+            <!-- Content border -->
+            <Border CornerRadius="8" 
+                    Padding="0,10,0,15"
+                    BorderBrush="{StaticResource DarkBrown}" 
+                    BorderThickness="0"
+                    Panel.ZIndex="1">
 
-                <!-- college name input section -->
-                <StackPanel Orientation="Vertical" Margin="0,20,0,10">
-                    <!-- college name label -->
-                    <TextBlock Text="College Name" 
-                              Margin="40,0,0,0" 
-                              Style="{StaticResource BaseTextBlockStyle}" 
-                              HorizontalAlignment="Left"/>
-                    <!-- college name input field -->
-                    <TextBox x:Name="CollegeNameTextBox" 
-                            Style="{StaticResource BaseTextBoxStyle}"
-                            Height="30"
-                            PreviewTextInput="CollegeNameTextBox_PreviewTextInput"/>
+                <!-- main content stack panel -->
+                <StackPanel Margin="20">
+                    <!-- header text -->
+                    <TextBlock Text="Add College" 
+                              FontSize="24" 
+                              FontWeight="Bold" 
+                              Foreground="{StaticResource Beige}"
+                              Style="{StaticResource BaseTextBlockStyle}"
+                              Margin="0,10,0,0" 
+                              HorizontalAlignment="Center"/>
+
+                    <!-- college name input section -->
+                    <StackPanel Orientation="Vertical" Margin="0,20,0,10">
+                        <!-- college name label -->
+                        <TextBlock Text="College Name" 
+                                  Margin="40,0,0,0" 
+                                  
+                                  Foreground="{StaticResource Beige}"
+                                  Style="{StaticResource BaseTextBlockStyle}" 
+                                  HorizontalAlignment="Left"/>
+                        <!-- college name input field -->
+                        <TextBox x:Name="CollegeNameTextBox" 
+                                Background="{StaticResource Beige}"
+                                Foreground="{StaticResource DarkBrown}"
+                                Style="{StaticResource BaseTextBoxStyle}"
+                                Height="30"
+                                PreviewTextInput="CollegeNameTextBox_PreviewTextInput"/>
+                    </StackPanel>
+
+                    <!-- college code input section -->
+                    <StackPanel Orientation="Vertical" Margin="0,10,0,0">
+                        <!-- college code label -->
+                        <TextBlock Text="College Code" 
+                                   Foreground="{StaticResource Beige}"
+                                   Margin="40,0,0,0" 
+                                   Style="{StaticResource BaseTextBlockStyle}" 
+                                   HorizontalAlignment="Left"/>
+                        <!-- college code input field -->
+                        <TextBox x:Name="CollegeCodeTextBox" 
+                                Background="{StaticResource Beige}"
+                                Foreground="{StaticResource DarkBrown}"
+                                Style="{StaticResource BaseTextBoxStyle}"
+                                Height="30"
+                                PreviewTextInput="CollegeCodeTextBox_PreviewTextInput" 
+                                TextChanged="CollegeCodeTextBox_TextChanged"/>
+                    </StackPanel>
+
+                    <!-- submit button -->
+                    <Button Content="Add College" 
+                            x:Name="AddCollegeButton" 
+                            Click="AddCollegeButton_Click"
+                            Style="{StaticResource AddButtonStyle}"
+                            Width="100" 
+                            Height="25"
+                            HorizontalAlignment="Right"
+                            Margin="0,20,40,0"/>
                 </StackPanel>
-
-                <!-- college code input section -->
-                <StackPanel Orientation="Vertical" Margin="0,10,0,0">
-                    <!-- college code label -->
-                    <TextBlock Text="College Code" 
-                              Margin="40,0,0,0" 
-                              Style="{StaticResource BaseTextBlockStyle}" 
-                              HorizontalAlignment="Left"/>
-                    <!-- college code input field -->
-                    <TextBox x:Name="CollegeCodeTextBox" 
-                            Style="{StaticResource BaseTextBoxStyle}"
-                            Height="30"
-                            PreviewTextInput="CollegeCodeTextBox_PreviewTextInput" 
-                            TextChanged="CollegeCodeTextBox_TextChanged"/>
-                </StackPanel>
-
-                <!-- submit button -->
-                <Button Content="Add College" 
-                        x:Name="AddCollegeButton" 
-                        Click="AddCollegeButton_Click"
-                        Style="{StaticResource AddButtonStyle}"
-                        Width="100" 
-                        Height="25"
-                        HorizontalAlignment="Right"
-                        Margin="0,20,40,0"/>
-            </StackPanel>
-        </Border>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

@@ -486,14 +486,12 @@
                                          Opacity="0.6"/>
                     </Border.Background>
                     <ContentControl Name="MainContent"
-                                  VerticalAlignment="Center"
-                                  HorizontalAlignment="Center"
-                                  FontSize="20"
-                                  Foreground="Black"/>
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    FontSize="20"
+                                     Foreground="Beige"/>
                 </Border>
-
             </Grid>
-
         </Grid>
     </Grid>
 </Window>

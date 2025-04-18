@@ -3,64 +3,108 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:local="clr-namespace:sis_app.Views"
-        Title="Gungnir - Login"
+        xmlns:local="clr-namespace:sis_app.Views"
+        Title="La Accademia - Login"
         Width="1000"
         Height="650"
-        ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        ResizeMode="NoResize" 
+        WindowStartupLocation="CenterScreen">
 
     <Grid>
-        
         <Grid.Background>
-            <ImageBrush ImageSource="/Resources\Images\athens.jpg" Stretch="UniformToFill" Opacity="1"/>
+            <ImageBrush ImageSource="/Resources\Images\athens.jpg" 
+                        Stretch="UniformToFill" 
+                        Opacity="1"/>
         </Grid.Background>
 
         <!-- login panel -->
-        <Border HorizontalAlignment="Center" VerticalAlignment="Center" 
-                Width="332"
-                CornerRadius="8" 
-                Padding="0,10,0,15"
-                BorderBrush="{StaticResource DarkBrown}" 
-                BorderThickness="1">
-            <Border.Background>
-                <SolidColorBrush Color="#F5F5DC" Opacity="0.7"/>
+        <Grid HorizontalAlignment="Center" 
+              VerticalAlignment="Center" 
+              Width="332">
 
+            <!-- Background border with shadow -->
+            <Border CornerRadius="8"
+                    Panel.ZIndex="0">
+                <Border.Background>
+                    <SolidColorBrush Color="#4A3C31" Opacity="0.7"/>
+                </Border.Background>
+            </Border>
 
-            </Border.Background>
+            <!-- Content border without shadow -->
+            <Border CornerRadius="8" 
+                    Padding="0,10,0,15"
+                    BorderBrush="{StaticResource Beige}" 
+                    BorderThickness="0"
+                    Panel.ZIndex="1">
 
-            <StackPanel>
-                
-                <!-- app title and login header -->
-                <TextBlock Text="La Accademia" FontSize="30" FontWeight="Bold" Style="{StaticResource BaseTextBlockStyle}" 
-                           Foreground="#4A3C31" HorizontalAlignment="Center"/>
-                <TextBlock Text="Login" FontSize="20" Foreground="#4A3C31" HorizontalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Margin="0,0,0,25"/>
+                <StackPanel>
+                    <!-- app title and login header -->
+                    <TextBlock Text="La Accademia" 
+                             FontSize="30" 
+                             FontWeight="Bold" 
+                             Style="{StaticResource BaseTextBlockStyle}" 
+                             Foreground="{StaticResource Beige}" 
+                             HorizontalAlignment="Center"/>
 
-                <!-- username input field -->
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="Username" Margin="25,0,0,0" Foreground="#4A3C31" Style="{StaticResource BaseTextBlockStyle}" HorizontalAlignment="Left"/>
-                    <TextBox x:Name="UsernameTextBox" Background="#4A3C31" Style="{StaticResource BaseInputStyle}" TextChanged="UsernameTextBox_TextChanged" Height="30" VerticalAlignment="Center"/>
-                </StackPanel>
+                    <TextBlock Text="Login" 
+                             FontSize="20" 
+                             Foreground="{StaticResource Beige}" 
+                             HorizontalAlignment="Center" 
+                             Style="{StaticResource BaseTextBlockStyle}" 
+                             Margin="0,0,0,25"/>
 
-                <!-- password input field -->
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="Password" Foreground="#4A3C31" Margin="25,0,0,0" Style="{StaticResource BaseTextBlockStyle}" HorizontalAlignment="Left"/>
-                    <PasswordBox x:Name="PasswordBox" Background="#4A3C31" Style="{StaticResource BaseInputStyle}"  Height="30" VerticalAlignment="Center"/>
-                </StackPanel>
+                    <!-- username input field -->
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Username" 
+                                 Margin="25,0,0,0" 
+                                 Foreground="{StaticResource Beige}"                                    
+                                 Style="{StaticResource BaseTextBlockStyle}" 
+                                 HorizontalAlignment="Left"/>
+                        <TextBox x:Name="UsernameTextBox" 
+                                 Foreground="{StaticResource MediumLightGray}"
+                                Background="{StaticResource Beige}" 
+                                Style="{StaticResource BaseInputStyle}" 
+                                TextChanged="UsernameTextBox_TextChanged" 
+                                Height="30" 
+                                VerticalAlignment="Center"/>
+                    </StackPanel>
 
-                <!-- action buttons container -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,25,25,0">
-                    <Button x:Name="RegisterButton" 
+                    <!-- password input field -->
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Password" 
+                                 Foreground="{StaticResource Beige}" 
+                                 Margin="25,0,0,0" 
+                                 Style="{StaticResource BaseTextBlockStyle}" 
+                                 HorizontalAlignment="Left"/>
+                        <PasswordBox x:Name="PasswordBox" 
+                                     Foreground="{StaticResource MediumLightGray}"
+                                   Background="{StaticResource Beige}" 
+                                   Style="{StaticResource BaseInputStyle}"  
+                                   Height="30" 
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- action buttons container -->
+                    <StackPanel Orientation="Horizontal" 
+                              HorizontalAlignment="Right" 
+                              Margin="0,25,25,0">
+                        <Button x:Name="RegisterButton" 
                                 Content="Register" 
                                 Style="{StaticResource RegisterButtonStyle}" 
-                                Click="RegisterButton_Click" Height="25" Width="80"
+                                Click="RegisterButton_Click" 
+                                Height="25" 
+                                Width="80"
                                 Margin="0,0,5,0"/>
-                    
-                    <Button x:Name="LoginButton" 
+
+                        <Button x:Name="LoginButton" 
                                 Content="Sign In" 
                                 Style="{StaticResource LoginButtonStyle}" 
-                                Click="LoginButton_Click" Height="25" Width="80"/>
+                                Click="LoginButton_Click" 
+                                Height="25" 
+                                Width="80"/>
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
-        </Border>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

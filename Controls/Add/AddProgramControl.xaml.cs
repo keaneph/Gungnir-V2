@@ -204,5 +204,10 @@ namespace sis_app.Controls.Add
 
             return true;
         }
+
+        private void ProgramNameTextBox_TextChanged_1(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }
