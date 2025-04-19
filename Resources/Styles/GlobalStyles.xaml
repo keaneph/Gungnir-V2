@@ -537,7 +537,7 @@
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
 
         <!--  i want this to always be disabled, it looks weird if there is no data -->
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible"/>
 
         <!-- pixel scrolling better than content scroll so i guess idk-->
         <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
