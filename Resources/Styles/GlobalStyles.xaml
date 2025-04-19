@@ -1,14 +1,14 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                     xmlns:local="clr-namespace:sis_app">
+                    xmlns:local="clr-namespace:sis_app">
 
-
+    <!-- Effects -->
     <DropShadowEffect x:Key="SoftShadow" 
-          ShadowDepth="2" 
-          BlurRadius="5" 
-          Opacity="0.3"/>
+                      ShadowDepth="2" 
+                      BlurRadius="5" 
+                      Opacity="0.3"/>
 
-    <!-- color palette --> 
+    <!-- Color Palette -->
     <SolidColorBrush x:Key="Purple" Color="#7160E8"/>
     <SolidColorBrush x:Key="Red" Color="#E74C3C"/>
     <SolidColorBrush x:Key="Orange" Color="#E67E22"/>
@@ -26,32 +26,29 @@
     <SolidColorBrush x:Key="Goldenrod" Color="#B8860B"/>
     <SolidColorBrush x:Key="Beige" Color="#D6D6BC"/>
     <SolidColorBrush x:Key="DarkBeige" Color="#EBEBD2"/>
-    <SolidColorBrush x:Key="MintGreen" Color= "#8FBC8F"/>
-    <SolidColorBrush x:Key="TransMintGreen" Color= "#8FBC8F" Opacity="0.5"/>
-    <SolidColorBrush x:Key="TransMintGreen2" Color= "#8FBC8F" Opacity="0.7"/>
-    <SolidColorBrush x:Key="DarkPeru" Color= "#96632F"/>
-    <SolidColorBrush x:Key="DarkPurple" Color= "#5040B8"/>
-    <SolidColorBrush x:Key="DarkRed" Color= "#C0392B"/>
+    <SolidColorBrush x:Key="MintGreen" Color="#8FBC8F"/>
+    <SolidColorBrush x:Key="TransMintGreen" Color="#8FBC8F" Opacity="0.5"/>
+    <SolidColorBrush x:Key="TransMintGreen2" Color="#8FBC8F" Opacity="0.7"/>
+    <SolidColorBrush x:Key="DarkPeru" Color="#96632F"/>
+    <SolidColorBrush x:Key="DarkPurple" Color="#5040B8"/>
+    <SolidColorBrush x:Key="DarkRed" Color="#C0392B"/>
 
-    <!-- base for textblocks -->
+    <!-- Base Styles -->
     <Style x:Key="BaseTextBlockStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource Beige}"/>
         <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="FontSize" Value="14"/>
     </Style>
 
-    <!-- input field base style -->
     <Style x:Key="BaseInputStyle" TargetType="Control">
         <Setter Property="Width" Value="280"/>
         <Setter Property="Height" Value="35"/>
         <Setter Property="Margin" Value="0,5,0,15"/>
         <Setter Property="Foreground" Value="{StaticResource Beige}"/>
         <Setter Property="Background" Value="{StaticResource DarkBrown}"/>
-        <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="10,5"/>
     </Style>
 
-    <!-- base for textboxes (input boxes) -->
     <Style x:Key="BaseTextBoxStyle" TargetType="TextBox">
         <Setter Property="Width" Value="280"/>
         <Setter Property="Height" Value="30"/>
@@ -60,11 +57,10 @@
         <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="Foreground" Value="{StaticResource DarkBrown}"/>
         <Setter Property="Background" Value="{StaticResource Beige}"/>
-        <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="10,5"/>
     </Style>
 
-    <!-- base for comboboxes -->
+    <!-- Base ComboBox Style with Template -->
     <Style x:Key="BaseComboBoxStyle" TargetType="ComboBox">
         <Setter Property="Width" Value="280"/>
         <Setter Property="Height" Value="30"/>
@@ -73,13 +69,10 @@
         <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="Foreground" Value="{StaticResource DarkBrown}"/>
         <Setter Property="Background" Value="{StaticResource Beige}"/>
-        <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="10,5"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
         <Setter Property="MaxDropDownHeight" Value="80"/>
-
-        <!-- Add ItemContainerStyle for ComboBoxItem styling -->
         <Setter Property="ItemContainerStyle">
             <Setter.Value>
                 <Style TargetType="ComboBoxItem">
@@ -87,8 +80,8 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="ComboBoxItem">
                                 <Border x:Name="Border"
-                                    Padding="5,3"
-                                    Background="Transparent">
+                                        Padding="5,3"
+                                        Background="Transparent">
                                     <ContentPresenter />
                                 </Border>
                                 <ControlTemplate.Triggers>
@@ -107,87 +100,62 @@
                 </Style>
             </Setter.Value>
         </Setter>
-
         <Setter Property="Template">
             <Setter.Value>
-                <!-- main combobox template -->
                 <ControlTemplate TargetType="ComboBox">
                     <Grid>
-                        <!-- main button part of the comboBox -->
                         <ToggleButton x:Name="ToggleButton"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        Background="{TemplateBinding Background}"
-                        IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                        Padding="{TemplateBinding Padding}">
-
-                            <!-- custom template for the togglebutton -->
+                                Background="{TemplateBinding Background}"
+                                IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                Padding="{TemplateBinding Padding}">
                             <ToggleButton.Template>
                                 <ControlTemplate TargetType="ToggleButton">
                                     <Border x:Name="Border" 
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="1">
+                                        Background="{TemplateBinding Background}">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-
                                             <ContentPresenter Grid.Column="0"
-                                                          Margin="5,0,0,0"
-                                                          VerticalAlignment="Center"/>
-
+                                                        Content="{Binding Path=SelectionBoxItem, 
+                                                                 RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}"
+                                                        ContentTemplate="{Binding Path=SelectionBoxItemTemplate, 
+                                                                        RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}"
+                                                        ContentTemplateSelector="{Binding Path=ItemTemplateSelector, 
+                                                                               RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}"
+                                                        Margin="5,0,0,0"
+                                                        VerticalAlignment="Center"
+                                                        TextElement.Foreground="{StaticResource DarkBrown}"/>
                                             <Path x:Name="Arrow"
                                               Grid.Column="1"
-                                              Fill="{StaticResource Beige}"
+                                              Fill="{StaticResource MintGreen}"
                                               HorizontalAlignment="Center"
                                               VerticalAlignment="Center"
                                               Data="M0,0 L8,0 L4,4 Z"   
                                               Margin="0,0,5,0"/>
                                         </Grid>
                                     </Border>
-
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#EBEBD2"
-                                        TargetName="Border"/>
+                                            <Setter Property="Background" Value="{StaticResource DarkBeige}" TargetName="Border"/>
                                         </Trigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </ToggleButton.Template>
                         </ToggleButton>
 
-                        <ContentPresenter
-                        Content="{TemplateBinding SelectionBoxItem}"
-                        ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                        ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Left"
-                        Margin="12,0,0,0"/>
-
                         <Popup x:Name="Popup"
                            AllowsTransparency="True"
                            IsOpen="{TemplateBinding IsDropDownOpen}"    
                            Placement="Bottom"
                            PopupAnimation="Slide">
-
                             <Grid x:Name="DropDown"
                               Background="{StaticResource Beige}"
                               MinWidth="{TemplateBinding ActualWidth}"        
                               MaxHeight="{TemplateBinding MaxDropDownHeight}">
-
-                                <Border x:Name="DropDownBorder"
-                            BorderBrush="{StaticResource LightGray}"
-                            BorderThickness="0"/>
-
+                                <Border x:Name="DropDownBorder"/>
                                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                    <ScrollViewer.Resources>
-                                        <Style TargetType="ScrollBar">
-                                            <Setter Property="Background" Value="{StaticResource Beige}"/>
-                                            <Setter Property="Foreground" Value="{StaticResource MintGreen}"/>
-                                        </Style>
-                                    </ScrollViewer.Resources>
-
                                     <StackPanel IsItemsHost="True"/>
                                 </ScrollViewer>
                             </Grid>
@@ -198,30 +166,36 @@
         </Setter>
     </Style>
 
-    <!-- add button style -->
-    <Style x:Key="AddButtonStyle" TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource Peru}"/>
-        <Setter Property="Foreground" Value="{StaticResource Beige}"/>
+    <!-- Sort ComboBox Style -->
+    <Style x:Key="SortComboBoxStyle" TargetType="ComboBox" BasedOn="{StaticResource BaseComboBoxStyle}">
+        <Setter Property="Width" Value="235"/>
+        <Setter Property="Height" Value="25"/>
+    </Style>
+
+    <!-- Button Base Style -->
+    <Style x:Key="BaseButtonStyle" TargetType="Button">
         <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Height" Value="25"/>
         <Setter Property="Padding" Value="8,3"/>
         <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="BorderBrush" Value="{StaticResource LightGray}"/>
-        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="{StaticResource Beige}"/>
+    </Style>
+
+    <!-- Button Styles -->
+    <Style x:Key="AddButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="Background" Value="{StaticResource Peru}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
                             Padding="{TemplateBinding Padding}">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <ContentPresenter HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <!-- when mouse hovers over the item -->
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#96632F"/>
+                            <Setter Property="Background" Value="{StaticResource DarkPeru}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -229,7 +203,6 @@
         </Setter>
     </Style>
 
-    <!-- edit button style-->
     <Style x:Key="EditModeToggleStyle" TargetType="ToggleButton">
         <Setter Property="Background" Value="{StaticResource Peru}"/>
         <Setter Property="Foreground" Value="{StaticResource Beige}"/>
@@ -237,27 +210,19 @@
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Height" Value="25"/>
         <Setter Property="Padding" Value="8,3"/>
-        <Setter Property="Cursor" Value="Hand"/> 
-        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
                     <Border Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        Padding="{TemplateBinding Padding}">
+                            Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center" 
-                                          VerticalAlignment="Center"
-                                          TextElement.Foreground="{StaticResource Beige}"
-                                          TextElement.FontFamily="{TemplateBinding FontFamily}"
-                                          TextElement.FontSize="{TemplateBinding FontSize}"/>
+                                        VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <!-- when mouse hovers over the item -->
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="{StaticResource DarkPeru}"/>
                         </Trigger>
-                        <!-- when pressed -->
                         <Trigger Property="IsChecked" Value="True">
                             <Setter Property="Background" Value="{StaticResource DarkPeru}"/>
                         </Trigger>
@@ -267,88 +232,57 @@
         </Setter>
     </Style>
 
-    <!-- login button style with hover effect -->
-    <Style x:Key="LoginButtonStyle" TargetType="Button">
+    <Style x:Key="LoginButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
         <Setter Property="Background" Value="{StaticResource Peru}"/>
-        <Setter Property="Foreground" Value="{StaticResource Beige}"/>
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Padding" Value="8,3"/>
-        <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="BorderBrush" Value="{StaticResource LightGray}"/>
-        <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        Padding="{TemplateBinding Padding}">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#96632F"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <!-- register button style with hover effect -->
-    <Style x:Key="RegisterButtonStyle" TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource Purple}"/>
-        <Setter Property="Foreground" Value="{StaticResource Beige}"/>
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Padding" Value="8,3"/>
-        <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="BorderBrush" Value="{StaticResource LightGray}"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Padding="{TemplateBinding Padding}">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#5040B8"/>
-                            
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <!-- clear button style -->
-    <Style x:Key="ClearButtonStyle" TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource Red}"/>
-        <Setter Property="Foreground" Value="{StaticResource Beige}"/>
-        <Setter Property="FontFamily" Value="Segoe UI"/>
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Height" Value="25"/>
-        <Setter Property="Padding" Value="8,3"/>
-        <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
                             Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center" 
-                                          VerticalAlignment="Center"
-                                          TextElement.Foreground="{StaticResource Beige}"
-                                          TextElement.FontFamily="{TemplateBinding FontFamily}"
-                                          TextElement.FontSize="{TemplateBinding FontSize}"/>
-                    </Border>   
+                                        VerticalAlignment="Center"/>
+                    </Border>
                     <ControlTemplate.Triggers>
-                        <!-- when mouse hovers over the item -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource DarkPeru}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="RegisterButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="Background" Value="{StaticResource Purple}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource DarkPurple}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ClearButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="Background" Value="{StaticResource Red}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="{StaticResource DarkRed}"/>
                         </Trigger>
@@ -358,32 +292,17 @@
         </Setter>
     </Style>
 
-    <!-- delete button style -->
-    <Style x:Key="DeleteSelectedStyle" TargetType="Button">
-        <!-- just copy and pasted frome edit and clear button styles -->
+    <Style x:Key="DeleteSelectedStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
         <Setter Property="Background" Value="{StaticResource Purple}"/>
-        <Setter Property="Foreground" Value="{StaticResource Beige}"/>
-        <Setter Property="FontFamily" Value="Segoe UI"/>
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Height" Value="25"/>
-        <Setter Property="Padding" Value="8,3"/>
-        <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
                             Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center" 
-                                          VerticalAlignment="Center"
-                                          TextElement.Foreground="{StaticResource Beige}"
-                                          TextElement.FontFamily="{TemplateBinding FontFamily}"
-                                          TextElement.FontSize="{TemplateBinding FontSize}"/>
+                                        VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <!-- when mouse hovers over the item -->
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="{StaticResource DarkPurple}"/>
                         </Trigger>
@@ -392,159 +311,17 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <!-- remind to add a new style for the sort dropdown ~   -->
-    <Style x:Key="SortComboBoxStyle" TargetType="ComboBox">
-        <Setter Property="Width" Value="280"/>
-        <Setter Property="Height" Value="25"/>
-        <Setter Property="Margin" Value="5"/>
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="FontFamily" Value="Segoe UI"/>
-        <Setter Property="Foreground" Value="{StaticResource DarkBrown}"/>
-        <Setter Property="Background" Value="{StaticResource Beige}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Padding" Value="10,5"/>
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-        <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
-        <Setter Property="MaxDropDownHeight" Value="80"/>
 
-        <!-- Add ItemContainerStyle from BaseComboBoxStyle -->
-        <Setter Property="ItemContainerStyle">
-            <Setter.Value>
-                <Style TargetType="ComboBoxItem">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ComboBoxItem">
-                                <Border x:Name="Border"
-                                    Padding="5,3"
-                                    Background="Transparent">
-                                    <ContentPresenter />
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" TargetName="Border" Value="{StaticResource MintGreen}"/>
-                                        <Setter Property="Foreground" Value="{StaticResource Beige}"/>
-                                    </Trigger>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="Background" TargetName="Border" Value="{StaticResource MintGreen}"/>
-                                        <Setter Property="Foreground" Value="{StaticResource Beige}"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Setter.Value>
-        </Setter>
-
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="ComboBox">
-                    <Grid>
-                        <ToggleButton x:Name="ToggleButton"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                Background="{TemplateBinding Background}"
-                                IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                Padding="{TemplateBinding Padding}">
-
-                            <ToggleButton.Template>
-                                <ControlTemplate TargetType="ToggleButton">
-                                    <Border x:Name="Border" 
-                                        Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="1">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-
-                                            <!-- Move ContentPresenter here instead of having it outside the ToggleButton -->
-                                            <ContentPresenter Grid.Column="0"
-                                                        Content="{Binding Path=SelectionBoxItem, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}"
-                                                        ContentTemplate="{Binding Path=SelectionBoxItemTemplate, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}"
-                                                        ContentTemplateSelector="{Binding Path=ItemTemplateSelector, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}"
-                                                        Margin="5,0,0,0"
-                                                        VerticalAlignment="Center"
-                                                        HorizontalAlignment="Left"/>
-
-                                            <Path x:Name="Arrow"
-                                              Grid.Column="1"
-                                              Fill="{StaticResource Beige}"
-                                              HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"
-                                              Data="M0,0 L8,0 L4,4 Z"   
-                                              Margin="0,0,5,0"/>
-                                        </Grid>
-                                    </Border>
-
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#EBEBD2" TargetName="Border"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </ToggleButton.Template>
-                        </ToggleButton>
-
-                        <!-- Remove the separate ContentPresenter here -->
-
-                        <Popup x:Name="Popup"
-                           AllowsTransparency="True"
-                           IsOpen="{TemplateBinding IsDropDownOpen}"    
-                           Placement="Bottom"
-                           PopupAnimation="Slide">
-
-                            <Grid x:Name="DropDown"
-                              Background="{StaticResource Beige}"
-                              MinWidth="{TemplateBinding ActualWidth}"        
-                              MaxHeight="{TemplateBinding MaxDropDownHeight}">
-
-                                <Border x:Name="DropDownBorder"
-                                    BorderThickness="1"/>
-
-                                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                    <ScrollViewer.Resources>
-                                        <Style TargetType="ScrollBar">
-                                            <Setter Property="Background" Value="{StaticResource Beige}"/>
-                                            <Setter Property="Foreground" Value="{StaticResource DarkBrown}"/>
-                                        </Style>
-                                    </ScrollViewer.Resources>
-
-                                    <StackPanel IsItemsHost="True"/>
-                                </ScrollViewer>
-                            </Grid>
-                        </Popup>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-
-
-        <!-- REMIND: choose whether to delete this or include this as default styling
-        for comboboxitem is pretty nice (the blue one)-->
-    </Style>
-
-    <!-- listview (otherwise known as table) style -->
+    <!-- ListView and Grid Styles -->
     <Style x:Key="CustomListViewStyle" TargetType="ListView">
         <Setter Property="Background" Value="{StaticResource TransDarkBrown}"/>
         <Setter Property="Foreground" Value="{StaticResource DarkBrown}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource LightGray}"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Margin" Value="0"/>
-        <Setter Property="Padding" Value="0"/>
-        <!-- i want width to have fixed size so disabling horizontal scroll bar for future purposes -->
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
-
-        <!--  i want this to always be disabled, it looks weird if there is no data -->
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible"/>
-
-        <!-- pixel scrolling better than content scroll so i guess idk-->
         <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
     </Style>
 
-    
-    <!-- gridview column header style -->
     <Style x:Key="HeaderStyle" TargetType="GridViewColumnHeader">
         <Setter Property="Background" Value="{StaticResource TransDarkBrown2}"/>
         <Setter Property="Foreground" Value="{StaticResource DarkBeige}"/>
@@ -554,39 +331,29 @@
         <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Padding" Value="0"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <!-- finally fixes this issue after 5 hours, all it needed was a negative margin zamn -->
         <Setter Property="Margin" Value="-2,0,0,0"/>
-
-        <!-- template for header-->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="GridViewColumnHeader">
-                    <!-- border container for header -->
-                    <!-- negative left margin to align borders -->
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            Margin="0"               
-                            HorizontalAlignment="Stretch"
                             Width="{TemplateBinding Width}">
-                        <!-- header text -->
                         <TextBlock Text="{TemplateBinding Content}"
-                                   Foreground="{TemplateBinding Foreground}"
-                                   FontFamily="{TemplateBinding FontFamily}"
-                                   FontSize="{TemplateBinding FontSize}"
-                                   FontWeight="{TemplateBinding FontWeight}"
-                                   Padding="{TemplateBinding Padding}"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
+                                 Foreground="{TemplateBinding Foreground}"
+                                 FontFamily="{TemplateBinding FontFamily}"
+                                 FontSize="{TemplateBinding FontSize}"
+                                 FontWeight="{TemplateBinding FontWeight}"
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
-    <!-- style for read-only cells in the table/grid -->
+    <!-- Table Cell Styles -->
     <Style x:Key="TableCellStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="#6B574A"/>
         <Setter Property="FontFamily" Value="Segoe UI"/>
@@ -597,13 +364,9 @@
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="TextAlignment" Value="Center"/>
         <Setter Property="Height" Value="25"/>
-
-        <!-- text overflow handling -->
-        <!-- might implement like a limit for characters -->
         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
     </Style>
 
-    <!-- style for editable cells in the table/grid -->
     <Style x:Key="TableCellTextBoxStyle" TargetType="TextBox">
         <Setter Property="Height" Value="25"/>
         <Setter Property="Padding" Value="10,5"/>
@@ -616,46 +379,49 @@
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="TextAlignment" Value="Center"/>
-
-        <!-- visual states -->
         <Style.Triggers>
-            <!-- appearance when cell is disabled -->
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Background" Value="{StaticResource Beige}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
 
-    <!-- list view items (rows) style -->
+    <!-- Table Cell ComboBox Style -->
+    <Style x:Key="TableCellComboBoxStyle" TargetType="ComboBox" BasedOn="{StaticResource BaseComboBoxStyle}">
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="Padding" Value="10,5"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkBrown}"/>
+        <Setter Property="Background" Value="{StaticResource DarkBeige}"/>
+        <Setter Property="BorderThickness" Value="0,0,1,1"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource Beige}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- ListViewItem Style -->
     <Style TargetType="ListViewItem">
         <Setter Property="Height" Value="40"/>
-        <Setter Property="Padding" Value="0"/>
-        <Setter Property="Margin" Value="0"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-        <Setter Property="BorderThickness" Value="0"/>
-
-        <!-- template for row appearance -->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">
-                    <!-- Border container for row -->
                     <Border x:Name="Border"
-                    Background="{TemplateBinding Background}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    Padding="{TemplateBinding Padding}">
+                            Background="{TemplateBinding Background}">
                         <GridViewRowPresenter VerticalAlignment="Stretch"/>
                     </Border>
-
-                    <!-- visual state triggers -->
                     <ControlTemplate.Triggers>
-                        <!-- mouse hover effect -->
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="{StaticResource TransMintGreen}" TargetName="Border"/>
                         </Trigger>
-                        <!-- selected row effect -->
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="{StaticResource TransMintGreen2}" TargetName="Border"/>
                         </Trigger>
@@ -665,20 +431,7 @@
         </Setter>
     </Style>
 
-    <!-- converters -->
-    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-    <local:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
-
-    <!-- style for combobox cells in the table/grid -->
-    <Style x:Key="TableCellComboBoxStyle" TargetType="ComboBox" BasedOn="{StaticResource BaseComboBoxStyle}">
-        <Setter Property="Height" Value="25"/>
-        <Setter Property="Margin" Value="0"/>
-        <Setter Property="HorizontalAlignment" Value="Stretch"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="BorderThickness" Value="0,0,1,1"/>
-    </Style>
-
-    <!-- search box style -->
+    <!-- Search Box Style -->
     <Style x:Key="SearchBoxStyle" TargetType="TextBox">
         <Setter Property="Width" Value="235"/>
         <Setter Property="Height" Value="25"/>
@@ -687,25 +440,22 @@
         <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="Foreground" Value="{StaticResource DarkBrown}"/>
         <Setter Property="Background" Value="{StaticResource Beige}"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Padding" Value="10,5"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
-                    <Border Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}">
+                    <Border Background="{TemplateBinding Background}">
                         <Grid>
-                            <!-- Placeholder Text -->
                             <TextBlock Text="Search colleges..."
-                                 Foreground="{StaticResource DarkBrown}"
-                                 Opacity="0.5"
-                                 Padding="{TemplateBinding Padding}"
-                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                 IsHitTestVisible="False">
+                                     Foreground="{StaticResource DarkBrown}"
+                                     Opacity="0.5"
+                                     Margin="5"
+                                     Padding="{TemplateBinding Padding}"
+                                     VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                     IsHitTestVisible="False">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="">
                                                 <Setter Property="Visibility" Value="Visible"/>
@@ -714,17 +464,12 @@
                                                 <Setter Property="Visibility" Value="Visible"/>
                                             </DataTrigger>
                                         </Style.Triggers>
-                                        <Setter Property="Visibility" Value="Collapsed"/>
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
-
-                            <!-- Actual TextBox -->
                             <ScrollViewer x:Name="PART_ContentHost" 
-                                    Margin="0"
-                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                    Background="{x:Null}"
-                                    BorderThickness="0"/>
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        Background="{x:Null}"/>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -739,4 +484,9 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <!-- Converters -->
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <local:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+
 </ResourceDictionary>

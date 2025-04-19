@@ -226,7 +226,9 @@
                                 Margin="0,0,0,10">
 
                         <!-- dashboard button -->
-                        <Button Style="{StaticResource SidebarButtonStyle}" 
+                        <Button x:Name="DashboardButton"
+                                Tag="Dashboard"
+                                Style="{StaticResource SidebarButtonStyle}" 
                                 Click="NavigateHome_Click">
                             <Grid>
                                 <Grid.ColumnDefinitions>

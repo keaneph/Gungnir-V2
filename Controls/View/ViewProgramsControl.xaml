@@ -6,16 +6,13 @@
              xmlns:local="clr-namespace:sis_app.Controls.View"
              mc:Ignorable="d"
              d:DesignHeight="800" d:DesignWidth="1350">
-    <!-- main grid container -->
     <Grid>
-        <!-- centered border with rounded corners -->
         <Border HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 Margin="20"
                 CornerRadius="15"
                 Padding="20">
 
-            <!-- main content grid -->
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -23,14 +20,13 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- top panel with search and sort -->
+                <!-- Top Panel: Search and Sort -->
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- search box -->
                     <TextBox x:Name="SearchBox" 
                             Grid.Column="0"
                             Width="400"
@@ -38,11 +34,8 @@
                             Style="{StaticResource SearchBoxStyle}"
                             TextChanged="SearchBox_TextChanged"/>
 
-                    <!-- sort dropdown -->
                     <ComboBox x:Name="SortComboBox" 
                             Grid.Column="1"
-                            Width="235" 
-                            Margin="0,10" 
                             Style="{StaticResource SortComboBoxStyle}"
                             SelectionChanged="SortComboBox_SelectionChanged">
                         <ComboBoxItem Content="Date and Time Modified (Oldest First)"/>
@@ -54,7 +47,7 @@
                     </ComboBox>
                 </Grid>
 
-                <!-- main data listview -->
+                <!-- Main ListView -->
                 <ListView x:Name="ProgramListView"
                          Grid.Row="1"
                          Margin="0,10"
@@ -62,10 +55,11 @@
                          Style="{StaticResource CustomListViewStyle}">
                     <ListView.View>
                         <GridView>
-                            <!-- program name column -->
+                            <!-- Program Name Column -->
                             <GridViewColumn Header="Program Name" Width="400">
                                 <GridViewColumn.HeaderContainerStyle>
-                                    <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource HeaderStyle}"/>
+                                    <Style TargetType="GridViewColumnHeader" 
+                                           BasedOn="{StaticResource HeaderStyle}"/>
                                 </GridViewColumn.HeaderContainerStyle>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
@@ -79,10 +73,11 @@
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <!-- program code column -->
+                            <!-- Program Code Column -->
                             <GridViewColumn Header="Program Code" Width="250">
                                 <GridViewColumn.HeaderContainerStyle>
-                                    <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource HeaderStyle}"/>
+                                    <Style TargetType="GridViewColumnHeader" 
+                                           BasedOn="{StaticResource HeaderStyle}"/>
                                 </GridViewColumn.HeaderContainerStyle>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
@@ -96,15 +91,15 @@
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <!-- college code column with edit/view modes -->
+                            <!-- College Code Column -->
                             <GridViewColumn Header="College Code" Width="250">
                                 <GridViewColumn.HeaderContainerStyle>
-                                    <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource HeaderStyle}"/>
+                                    <Style TargetType="GridViewColumnHeader" 
+                                           BasedOn="{StaticResource HeaderStyle}"/>
                                 </GridViewColumn.HeaderContainerStyle>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid>
-                                            <!-- combobox for edit mode -->
                                             <ComboBox ItemsSource="{Binding DataContext._availableCollegeCodes, 
                                                       RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                       SelectedItem="{Binding CollegeCode, UpdateSourceTrigger=PropertyChanged}"
@@ -114,7 +109,6 @@
                                                       Visibility="{Binding ElementName=EditModeToggleButton, Path=IsChecked, 
                                                                  Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-                                            <!-- textblock for view mode -->
                                             <TextBlock Text="{Binding CollegeCode}"
                                                       Style="{StaticResource TableCellStyle}"
                                                       Width="230"
@@ -125,30 +119,32 @@
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <!-- date and time column -->
+                            <!-- Date and Time Column -->
                             <GridViewColumn Header="Date and Time" Width="250">
                                 <GridViewColumn.HeaderContainerStyle>
-                                    <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource HeaderStyle}"/>
+                                    <Style TargetType="GridViewColumnHeader" 
+                                           BasedOn="{StaticResource HeaderStyle}"/>
                                 </GridViewColumn.HeaderContainerStyle>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding DateTime}"
-                                                 Style="{StaticResource TableCellStyle}"
-                                                 Width="230"/>
+                                                  Style="{StaticResource TableCellStyle}"
+                                                  Width="230"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <!-- user column -->
+                            <!-- User Column -->
                             <GridViewColumn Header="User" Width="150">
                                 <GridViewColumn.HeaderContainerStyle>
-                                    <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource HeaderStyle}"/>
+                                    <Style TargetType="GridViewColumnHeader" 
+                                           BasedOn="{StaticResource HeaderStyle}"/>
                                 </GridViewColumn.HeaderContainerStyle>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding User}"
-                                                 Style="{StaticResource TableCellStyle}"
-                                                 Width="130"/>
+                                                  Style="{StaticResource TableCellStyle}"
+                                                  Width="130"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -156,15 +152,16 @@
                     </ListView.View>
                 </ListView>
 
-                <!-- bottom control panel -->
+                <!-- Bottom Control Panel -->
                 <Grid Grid.Row="2" Margin="0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- left-aligned action buttons -->
-                    <StackPanel Orientation="Horizontal" Grid.Column="0" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal" 
+                              Grid.Column="0" 
+                              HorizontalAlignment="Left">
                         <Button Content="Clear Programs"
                                 x:Name="ClearProgramsButton"
                                 Click="ClearProgramsButton_Click"
@@ -176,13 +173,12 @@
                                 Style="{StaticResource DeleteSelectedStyle}"/>
                     </StackPanel>
 
-                    <!-- edit mode toggle button -->
                     <ToggleButton Grid.Column="1"
-                                x:Name="EditModeToggleButton"
-                                Content="Enable Edit Mode"
-                                Style="{StaticResource EditModeToggleStyle}"
-                                Checked="EditModeToggleButton_Checked"
-                                Unchecked="EditModeToggleButton_Unchecked"/>
+                                 x:Name="EditModeToggleButton"
+                                 Content="Enable Edit Mode"
+                                 Style="{StaticResource EditModeToggleStyle}"
+                                 Checked="EditModeToggleButton_Checked"
+                                 Unchecked="EditModeToggleButton_Unchecked"/>
                 </Grid>
             </Grid>
         </Border>

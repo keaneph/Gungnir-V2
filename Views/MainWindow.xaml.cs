@@ -93,6 +93,23 @@ namespace sis_app.Views
 
         private void SetSelectedButton(Button selectedButton)
         {
+
+            // First, check if the clicked button is the dashboard button
+            if (selectedButton.Name == "DashboardButton") // Make sure this matches your XAML button name
+            {
+                // Reset all buttons to default style
+                ResetAllButtonStyles();
+                // Don't apply the selected style to dashboard button
+                return;
+            }
+
+            // For all other buttons, apply the normal selection logic
+            ResetAllButtonStyles();
+            selectedButton.Style = (Style)FindResource("SelectedSidebarButtonStyle");
+         
+        }
+        private void ResetAllButtonStyles()
+        {
             // Reset all buttons to default style
             AddCollegeButton.Style = (Style)FindResource("SidebarButtonStyle");
             AddProgramButton.Style = (Style)FindResource("SidebarButtonStyle");
@@ -102,10 +119,9 @@ namespace sis_app.Views
             ViewStudentListButton.Style = (Style)FindResource("SidebarButtonStyle");
             ViewHistoryButton.Style = (Style)FindResource("SidebarButtonStyle");
             ViewSettingsButton.Style = (Style)FindResource("SidebarButtonStyle");
-
-            // Set selected button to selected style
-            selectedButton.Style = (Style)FindResource("SelectedSidebarButtonStyle");
+            DashboardButton.Style = (Style)FindResource("SidebarButtonStyle");
         }
+                  
 
         // setup initial UI state
         private void InitializeUserInterface()
@@ -136,6 +152,7 @@ namespace sis_app.Views
         private void NavigateHome_Click(object sender, RoutedEventArgs e)
         {
             MainContent.Content = _dashboardView;
+            SetSelectedButton(sender as Button);
             UpdateDirectory("Home");
         }
 
