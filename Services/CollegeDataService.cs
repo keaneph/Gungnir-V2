@@ -147,7 +147,7 @@ namespace sis_app.Services
                         {
                             // keep other colleges
                             sw.WriteLine(college.ToString());
-                        }
+                        }   
                     }
                 }
             }

@@ -249,12 +249,6 @@ namespace sis_app.Controls.View
                 return false;
             }
 
-            if (firstName.Length < MIN_NAME_LENGTH)
-            {
-                ShowValidationError($"First name must be at least {MIN_NAME_LENGTH} characters.");
-                return false;
-            }
-
             if (firstName.Length > MAX_FIRSTNAME_LENGTH)
             {
                 ShowValidationError($"First name cannot exceed {MAX_FIRSTNAME_LENGTH} characters.");
@@ -276,12 +270,6 @@ namespace sis_app.Controls.View
             if (string.IsNullOrWhiteSpace(lastName))
             {
                 ShowValidationError("Last name cannot be empty.");
-                return false;
-            }
-
-            if (lastName.Length < MIN_NAME_LENGTH)
-            {
-                ShowValidationError($"Last name must be at least {MIN_NAME_LENGTH} characters.");
                 return false;
             }
 

@@ -481,12 +481,32 @@ namespace sis_app.Controls.View
         {
             try
             {
-                // clear only college data
+                // Get all programs before clearing colleges
+                var allPrograms = _programDataService.GetAllPrograms();
+
+                // Clear colleges
                 File.WriteAllText(_collegeDataService._filePath, string.Empty);
+
+                // Update all affected programs
+                foreach (var program in allPrograms)
+                {
+                    var originalProgram = new Program
+                    {
+                        Name = program.Name,
+                        Code = program.Code,
+                        CollegeCode = program.CollegeCode,
+                        DateTime = program.DateTime,
+                        User = program.User
+                    };
+
+                    program.CollegeCode = DELETED_MARKER;
+                    _programDataService.UpdateProgram(originalProgram, program);
+                }
+
                 LoadColleges();
 
                 MessageBox.Show(
-                    "All college data has been cleared successfully.",
+                    $"All college data has been cleared successfully. {allPrograms.Count} programs were updated.",
                     "Success",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information
