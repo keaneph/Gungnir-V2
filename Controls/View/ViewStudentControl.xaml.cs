@@ -20,7 +20,6 @@ namespace sis_app.Controls.View
         // validation limits for student data
         private const int MAX_FIRSTNAME_LENGTH = 26;
         private const int MAX_LASTNAME_LENGTH = 14;
-        private const int MIN_NAME_LENGTH = 2;
         private const string DELETED_MARKER = "DELETED";
         private const string ID_NUMBER_FORMAT = "YYYY-NNNN";
         private const int MIN_YEAR = 2016;
