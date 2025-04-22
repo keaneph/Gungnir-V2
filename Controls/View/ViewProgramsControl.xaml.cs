@@ -663,32 +663,39 @@ namespace sis_app.Controls.View
 
         private void DeleteProgramAndUpdateStudents(Program program)
         {
-            var affectedStudents = _studentDataService.GetAllStudents()
-                .Where(s => s.ProgramCode.Equals(program.Code, StringComparison.OrdinalIgnoreCase))
-                .ToList();
-
-            _programDataService.DeleteProgram(program);
-            _programs.Remove(program);
-            _allPrograms.Remove(program);
-
-            foreach (var student in affectedStudents)
+            try
             {
-                var originalStudent = new Student
-                {
-                    IDNumber = student.IDNumber,
-                    FirstName = student.FirstName,
-                    LastName = student.LastName,
-                    ProgramCode = student.ProgramCode,
-                    CollegeCode = student.CollegeCode,
-                    YearLevel = student.YearLevel,
-                    Gender = student.Gender,
-                    User = student.User,
-                    DateTime = student.DateTime
-                };
+                // Get affected students before deletion for the message
+                var affectedStudents = _studentDataService.GetAllStudents()
+                    .Where(s => s.ProgramCode.Equals(program.Code, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
 
-                student.ProgramCode = DELETED_MARKER;
-                student.CollegeCode = DELETED_MARKER;
-                _studentDataService.UpdateStudent(originalStudent, student);
+                // Perform the deletion
+                _programDataService.DeleteProgram(program);
+
+                // Remove from local collections
+                _programs.Remove(program);
+                _allPrograms.Remove(program);
+
+                // Show message if students were affected
+                if (affectedStudents.Any())
+                {
+                    MessageBox.Show(
+                        $"Program '{program.Code}' has been deleted. {affectedStudents.Count} students have been updated to reference no program.",
+                        "Students Updated",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error deleting program: {ex.Message}",
+                    "Delete Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
             }
         }
 

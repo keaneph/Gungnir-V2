@@ -21,10 +21,10 @@ namespace sis_app.Models
         public string Gender { get; set; }
 
         // code of the program the student is enrolled in
-        public string ProgramCode { get; set; }
+        public string? ProgramCode { get; set; }
 
         // code of the college the student belongs to
-        public string CollegeCode { get; set; }
+        public string? CollegeCode { get; set; }
 
         // timestamp of last modification
         public DateTime DateTime { get; set; }

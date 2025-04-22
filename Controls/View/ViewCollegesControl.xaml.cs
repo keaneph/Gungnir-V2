@@ -523,27 +523,39 @@ namespace sis_app.Controls.View
 
         private void DeleteCollegeAndUpdatePrograms(College college)
         {
-            var affectedPrograms = _programDataService.GetAllPrograms()
-                .Where(p => p.CollegeCode.Equals(college.Code, StringComparison.OrdinalIgnoreCase))
-                .ToList();
-
-            _collegeDataService.DeleteCollege(college);
-            _colleges.Remove(college);
-            _allColleges.Remove(college);
-
-            foreach (var program in affectedPrograms)
+            try
             {
-                var originalProgram = new Program
-                {
-                    Code = program.Code,
-                    Name = program.Name,
-                    CollegeCode = program.CollegeCode,
-                    User = program.User,
-                    DateTime = program.DateTime
-                };
+                // Get affected programs before deletion for the message
+                var affectedPrograms = _programDataService.GetAllPrograms()
+                    .Where(p => p.CollegeCode.Equals(college.Code, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
 
-                program.CollegeCode = DELETED_MARKER;
-                _programDataService.UpdateProgram(originalProgram, program);
+                // Perform the deletion
+                _collegeDataService.DeleteCollege(college);
+
+                // Remove from local collections
+                _colleges.Remove(college);
+                _allColleges.Remove(college);
+
+                // Show message if programs were affected
+                if (affectedPrograms.Any())
+                {
+                    MessageBox.Show(
+                        $"College '{college.Code}' has been deleted. {affectedPrograms.Count} programs have been updated to reference no college.",
+                        "Programs Updated",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error deleting college: {ex.Message}",
+                    "Delete Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
             }
         }
 

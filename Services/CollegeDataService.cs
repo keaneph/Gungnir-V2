@@ -86,12 +86,22 @@ namespace sis_app.Services
         {
             using var connection = new MySqlConnection(App.DatabaseService._connectionString);
             connection.Open();
+            using var transaction = connection.BeginTransaction();
 
-            using var command = connection.CreateCommand();
-            command.CommandText = "DELETE FROM colleges WHERE code = @code";
-            command.Parameters.AddWithValue("@code", collegeToDelete.Code);
+            try
+            {
+                using var command = connection.CreateCommand();
+                command.CommandText = "DELETE FROM colleges WHERE code = @code";
+                command.Parameters.AddWithValue("@code", collegeToDelete.Code);
+                command.ExecuteNonQuery();
 
-            command.ExecuteNonQuery();
+                transaction.Commit();
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
         }
     }
 }

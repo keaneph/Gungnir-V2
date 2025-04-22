@@ -25,7 +25,9 @@ namespace sis_app.Services
                 {
                     Code = reader.GetString("code"),
                     Name = reader.GetString("name"),
-                    CollegeCode = reader.GetString("college_code"),
+                    CollegeCode = reader.IsDBNull(reader.GetOrdinal("college_code"))
+                        ? "DELETED"
+                        : reader.GetString("college_code"),
                     User = reader.GetString("created_by"),
                     DateTime = reader.GetDateTime("created_date")
                 });
@@ -89,12 +91,22 @@ namespace sis_app.Services
         {
             using var connection = new MySqlConnection(App.DatabaseService._connectionString);
             connection.Open();
+            using var transaction = connection.BeginTransaction();
 
-            using var command = connection.CreateCommand();
-            command.CommandText = "DELETE FROM programs WHERE code = @code";
-            command.Parameters.AddWithValue("@code", programToDelete.Code);
+            try
+            {
+                using var command = connection.CreateCommand();
+                command.CommandText = "DELETE FROM programs WHERE code = @code";
+                command.Parameters.AddWithValue("@code", programToDelete.Code);
+                command.ExecuteNonQuery();
 
-            command.ExecuteNonQuery();
+                transaction.Commit();
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
         }
     }
 }

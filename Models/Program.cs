@@ -12,7 +12,7 @@ namespace sis_app.Models
         public string Code { get; set; }
 
         // code of the college this program belongs to
-        public string CollegeCode { get; set; }
+        public string? CollegeCode { get; set; }
 
         // timestamp of last modification
         public DateTime DateTime { get; set; }

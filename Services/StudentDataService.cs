@@ -17,10 +17,10 @@ namespace sis_app.Services
 
             using var command = connection.CreateCommand();
             command.CommandText = @"
-                SELECT s.id_number, s.first_name, s.last_name, s.year_level, s.gender, 
-                       s.program_code, p.college_code, s.created_by, s.created_date 
-                FROM students s
-                LEFT JOIN programs p ON s.program_code = p.code";
+        SELECT s.id_number, s.first_name, s.last_name, s.year_level, s.gender, 
+               s.program_code, p.college_code, s.created_by, s.created_date 
+        FROM students s
+        LEFT JOIN programs p ON s.program_code = p.code";
 
             using var reader = command.ExecuteReader();
             while (reader.Read())
@@ -32,8 +32,12 @@ namespace sis_app.Services
                     LastName = reader.GetString("last_name"),
                     YearLevel = reader.GetInt32("year_level"),
                     Gender = reader.GetString("gender"),
-                    ProgramCode = reader.GetString("program_code"),
-                    CollegeCode = !reader.IsDBNull(reader.GetOrdinal("college_code")) ? reader.GetString("college_code") : "DELETED",
+                    ProgramCode = reader.IsDBNull(reader.GetOrdinal("program_code"))
+                        ? "DELETED"
+                        : reader.GetString("program_code"),
+                    CollegeCode = reader.IsDBNull(reader.GetOrdinal("college_code"))
+                        ? "DELETED"
+                        : reader.GetString("college_code"),
                     User = reader.GetString("created_by"),
                     DateTime = reader.GetDateTime("created_date")
                 });
