@@ -1,167 +1,110 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using sis_app.Models;
 
 namespace sis_app.Services
 {
-    // service class to handle all student data operations (crud operations)
     public class StudentDataService
     {
-        // path to the csv file storing student data
-        internal readonly string _filePath;
-
-        // current user performing operations (defaults to "Admin")
         public string CurrentUser { get; set; } = "Admin";
 
-        // constructor initializes service with file path and ensures data directory exists
-        public StudentDataService(string fileName)
-        {
-            // create path to Data folder in project directory
-            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string projectDirectory = Path.Combine(baseDirectory, "..\\..\\..\\");
-            string dataDirectory = Path.Combine(projectDirectory, "Data");
-
-            // create Data directory if it doesn't exist
-            if (!Directory.Exists(dataDirectory))
-            {
-                Directory.CreateDirectory(dataDirectory);
-            }
-
-            // set full path to csv file
-            _filePath = Path.Combine(dataDirectory, fileName);
-
-            // create empty file if it doesn't exist
-            if (!File.Exists(_filePath))
-            {
-                File.Create(_filePath).Close();
-            }
-        }
-
-        // retrieves all students from the csv file
         public List<Student> GetAllStudents()
         {
             List<Student> students = new List<Student>();
+            using var connection = new MySqlConnection(App.DatabaseService._connectionString);
+            connection.Open();
 
-            try
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                SELECT s.id_number, s.first_name, s.last_name, s.year_level, s.gender, 
+                       s.program_code, p.college_code, s.created_by, s.created_date 
+                FROM students s
+                LEFT JOIN programs p ON s.program_code = p.code";
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
             {
-                // read each line and convert to student object
-                var lines = File.ReadAllLines(_filePath);
-                foreach (string line in lines.Where(l => !string.IsNullOrWhiteSpace(l)))
+                students.Add(new Student
                 {
-                    students.Add(Student.FromCsv(line));
-                }
-            }
-            catch (Exception ex)
-            {
-                // log error but don't crash the application
-                Console.WriteLine($"Error reading student data: {ex.Message}");
+                    IDNumber = reader.GetString("id_number"),
+                    FirstName = reader.GetString("first_name"),
+                    LastName = reader.GetString("last_name"),
+                    YearLevel = reader.GetInt32("year_level"),
+                    Gender = reader.GetString("gender"),
+                    ProgramCode = reader.GetString("program_code"),
+                    CollegeCode = !reader.IsDBNull(reader.GetOrdinal("college_code")) ? reader.GetString("college_code") : "DELETED",
+                    User = reader.GetString("created_by"),
+                    DateTime = reader.GetDateTime("created_date")
+                });
             }
 
             return students;
         }
 
-        // adds a new student to the csv file
         public void AddStudent(Student student)
         {
-            try
-            {
-                // using statement ensures proper resource disposal
-                using (StreamWriter sw = File.AppendText(_filePath))
-                {
-                    sw.WriteLine(student.ToString());
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error adding student: {ex.Message}");
-                throw; // rethrow to notify caller of failure
-            }
+            using var connection = new MySqlConnection(App.DatabaseService._connectionString);
+            connection.Open();
+
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                INSERT INTO students 
+                (id_number, first_name, last_name, program_code, year_level, gender, created_by, created_date)
+                VALUES 
+                (@id, @firstName, @lastName, @programCode, @yearLevel, @gender, @user, @date)";
+
+            command.Parameters.AddWithValue("@id", student.IDNumber);
+            command.Parameters.AddWithValue("@firstName", student.FirstName);
+            command.Parameters.AddWithValue("@lastName", student.LastName);
+            command.Parameters.AddWithValue("@programCode", student.ProgramCode);
+            command.Parameters.AddWithValue("@yearLevel", student.YearLevel);
+            command.Parameters.AddWithValue("@gender", student.Gender);
+            command.Parameters.AddWithValue("@user", student.User);
+            command.Parameters.AddWithValue("@date", student.DateTime);
+
+            command.ExecuteNonQuery();
         }
 
-        // updates existing student information
         public void UpdateStudent(Student oldStudent, Student newStudent)
         {
-            // get current list of students
-            List<Student> students = GetAllStudents();
-            bool replaced = false;
+            using var connection = new MySqlConnection(App.DatabaseService._connectionString);
+            connection.Open();
 
-            try
-            {
-                // rewrite entire file with updated student data
-                using (StreamWriter sw = new StreamWriter(_filePath))
-                {
-                    foreach (Student student in students)
-                    {
-                        // if match found by id number, write new student data
-                        if (student.IDNumber == oldStudent.IDNumber)
-                        {
-                            // update audit fields
-                            newStudent.DateTime = DateTime.Now;
-                            newStudent.User = CurrentUser;
-                            sw.WriteLine(newStudent.ToString());
-                            replaced = true;
-                        }
-                        else
-                        {
-                            // keep existing student data
-                            sw.WriteLine(student.ToString());
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error updating student: {ex.Message}");
-                throw; // rethrow to handle in UI
-            }
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                UPDATE students 
+                SET first_name = @firstName,
+                    last_name = @lastName,
+                    program_code = @programCode,
+                    year_level = @yearLevel,
+                    gender = @gender,
+                    created_by = @user,
+                    created_date = @date
+                WHERE id_number = @oldId";
 
-            // log if student wasn't found
-            if (!replaced)
-            {
-                Console.WriteLine($"Student to update not found: {oldStudent.IDNumber}");
-            }
+            command.Parameters.AddWithValue("@firstName", newStudent.FirstName);
+            command.Parameters.AddWithValue("@lastName", newStudent.LastName);
+            command.Parameters.AddWithValue("@programCode", newStudent.ProgramCode);
+            command.Parameters.AddWithValue("@yearLevel", newStudent.YearLevel);
+            command.Parameters.AddWithValue("@gender", newStudent.Gender);
+            command.Parameters.AddWithValue("@user", newStudent.User);
+            command.Parameters.AddWithValue("@date", newStudent.DateTime);
+            command.Parameters.AddWithValue("@oldId", oldStudent.IDNumber);
+
+            command.ExecuteNonQuery();
         }
 
-        // removes a student from the csv file
         public void DeleteStudent(Student studentToDelete)
         {
-            // get current list of students
-            List<Student> students = GetAllStudents();
-            bool removed = false;
+            using var connection = new MySqlConnection(App.DatabaseService._connectionString);
+            connection.Open();
 
-            try
-            {
-                // rewrite file excluding deleted student
-                using (StreamWriter sw = new StreamWriter(_filePath))
-                {
-                    foreach (Student student in students)
-                    {
-                        // skip the student to be deleted
-                        if (student.IDNumber == studentToDelete.IDNumber)
-                        {
-                            removed = true;
-                        }
-                        else
-                        {
-                            // keep other students
-                            sw.WriteLine(student.ToString());
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error deleting student: {ex.Message}");
-                throw; // rethrow to handle in UI
-            }
+            using var command = connection.CreateCommand();
+            command.CommandText = "DELETE FROM students WHERE id_number = @id";
+            command.Parameters.AddWithValue("@id", studentToDelete.IDNumber);
 
-            // log if student wasn't found
-            if (!removed)
-            {
-                Console.WriteLine($"Student to delete not found: {studentToDelete.IDNumber}");
-            }
+            command.ExecuteNonQuery();
         }
     }
 }

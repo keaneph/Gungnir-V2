@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.Windows;
+using sis_app.Services;
 
 namespace sis_app
 {
@@ -9,6 +10,15 @@ namespace sis_app
     /// </summary>
     public partial class App : Application
     {
+        public static DatabaseService DatabaseService { get; private set; }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            string connectionString = "Server=localhost;Database=accademia2;Uid=root;Pwd=@Stampylonghead12;";
+            DatabaseService = new DatabaseService(connectionString);
+        }
     }
 
 }

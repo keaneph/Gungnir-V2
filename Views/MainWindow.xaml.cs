@@ -67,9 +67,9 @@ namespace sis_app.Views
         {
             CurrentUser = username ?? DEFAULT_USER;
 
-            _collegeDataService = new CollegeDataService("colleges.csv") { CurrentUser = CurrentUser };
-            _programDataService = new ProgramDataService("programs.csv") { CurrentUser = CurrentUser };
-            _studentDataService = new StudentDataService("students.csv") { CurrentUser = CurrentUser };
+            _collegeDataService = new CollegeDataService { CurrentUser = CurrentUser };
+            _programDataService = new ProgramDataService { CurrentUser = CurrentUser };
+            _studentDataService = new StudentDataService { CurrentUser = CurrentUser };
         }
 
         // initialize UI controls
@@ -82,12 +82,9 @@ namespace sis_app.Views
             _addProgramControl = new AddProgramControl(_programDataService, _collegeDataService);
             _addStudentControl = new AddStudentControl(_studentDataService, _collegeDataService, _programDataService);
 
-            // initialize view controls
-            _viewCollegesControl = new ViewCollegesControl(_collegeDataService);
-            _viewProgramsControl = new ViewProgramsControl(_programDataService, _studentDataService)
-            {
-                CurrentUser = CurrentUser
-            };
+            // initialize view controls with correct constructor parameters
+            _viewCollegesControl = new ViewCollegesControl(_collegeDataService, _programDataService);
+            _viewProgramsControl = new ViewProgramsControl(_programDataService, _studentDataService, _collegeDataService);
             _viewStudentControl = new ViewStudentControl(_studentDataService, _programDataService, _collegeDataService);
         }
 

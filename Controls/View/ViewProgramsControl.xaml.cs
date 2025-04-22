@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using MySql.Data.MySqlClient;
 using sis_app.Models;
 using sis_app.Services;
 
@@ -16,7 +15,6 @@ namespace sis_app.Controls.View
 {
     public partial class ViewProgramsControl : UserControl
     {
-        // constants for validation and data management
         #region Constants
         private const int MAX_PROGRAM_NAME_LENGTH = 27;
         private const int MAX_PROGRAM_CODE_LENGTH = 7;
@@ -24,7 +22,6 @@ namespace sis_app.Controls.View
         private const string DELETED_MARKER = "DELETED";
         #endregion
 
-        // private fields for data services and collections
         #region Private Fields
         private readonly ProgramDataService _programDataService;
         private readonly StudentDataService _studentDataService;
@@ -36,7 +33,6 @@ namespace sis_app.Controls.View
         private string _currentSearchText = string.Empty;
         #endregion
 
-        // public properties
         #region Public Properties
         public string CurrentUser { get; set; }
 
@@ -47,18 +43,15 @@ namespace sis_app.Controls.View
         }
         #endregion
 
-        // constructor and initialization methods
         #region Constructor and Initialization
-        public ViewProgramsControl(ProgramDataService programDataService, StudentDataService studentDataService)
+        public ViewProgramsControl(ProgramDataService programDataService, StudentDataService studentDataService, CollegeDataService collegeDataService)
         {
             InitializeComponent();
 
-            // validate and initialize services
             _programDataService = programDataService ?? throw new ArgumentNullException(nameof(programDataService));
             _studentDataService = studentDataService ?? throw new ArgumentNullException(nameof(studentDataService));
-            _collegeDataService = new CollegeDataService("colleges.csv");
+            _collegeDataService = collegeDataService ?? throw new ArgumentNullException(nameof(collegeDataService));
 
-            // initialize collections
             _programs = new ObservableCollection<Program>();
             _allPrograms = new ObservableCollection<Program>();
             _originalProgramData = new Dictionary<Program, Program>();
@@ -75,7 +68,6 @@ namespace sis_app.Controls.View
             SortComboBox.SelectedIndex = 0;
         }
 
-        // loads available college codes from service
         private void LoadAvailableCollegeCodes()
         {
             try
@@ -91,16 +83,18 @@ namespace sis_app.Controls.View
             }
         }
         #endregion
-
-        // methods for loading program data
         #region Data Loading Methods
         public void LoadPrograms()
         {
             try
             {
                 var programs = _programDataService.GetAllPrograms();
-                _allPrograms = new ObservableCollection<Program>(programs);
+                if (programs == null)
+                {
+                    throw new Exception("Failed to retrieve programs from database");
+                }
 
+                _allPrograms = new ObservableCollection<Program>(programs);
                 _programs.Clear();
                 foreach (var program in programs)
                 {
@@ -133,7 +127,6 @@ namespace sis_app.Controls.View
         }
         #endregion
 
-        // input validation methods
         #region Input Validation Methods
         private void ProgramNameTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -169,7 +162,6 @@ namespace sis_app.Controls.View
             return true;
         }
 
-        // validates program name according to rules
         private bool ValidateProgramName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -193,7 +185,6 @@ namespace sis_app.Controls.View
             return true;
         }
 
-        // validates program code according to rules
         private bool ValidateProgramCode(string code)
         {
             if (string.IsNullOrWhiteSpace(code))
@@ -223,7 +214,6 @@ namespace sis_app.Controls.View
             return true;
         }
 
-        // validates college code exists
         private bool ValidateCollegeCode(string collegeCode)
         {
             if (!_availableCollegeCodes.Contains(collegeCode, StringComparer.OrdinalIgnoreCase))
@@ -235,8 +225,6 @@ namespace sis_app.Controls.View
             return true;
         }
         #endregion
-
-        // handlers for text changes
         #region Text Change Handlers
         private void ProgramNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -252,7 +240,6 @@ namespace sis_app.Controls.View
             {
                 int caretIndex = textBox.CaretIndex;
                 string newText = textBox.Text.ToUpper();
-
                 newText = EnforceCodeRules(newText);
 
                 textBox.Text = newText;
@@ -285,7 +272,6 @@ namespace sis_app.Controls.View
         }
         #endregion
 
-        // handlers for edit mode
         #region Edit Mode Handlers
         private void EditModeToggleButton_Checked(object sender, RoutedEventArgs e)
         {
@@ -343,23 +329,46 @@ namespace sis_app.Controls.View
         {
             try
             {
-                foreach (var program in _programs.ToList())
+                using (var connection = new MySqlConnection(App.DatabaseService._connectionString))
                 {
-                    if (!_originalProgramData.TryGetValue(program, out Program originalProgram))
-                        continue;
+                    connection.Open();
+                    using var transaction = connection.BeginTransaction();
 
-                    if (!HasChanges(program, originalProgram))
-                        continue;
-
-                    if (!ValidateAndUpdateProgram(program, originalProgram))
+                    try
                     {
-                        RevertChanges(program, originalProgram);
+                        foreach (var program in _programs.ToList())
+                        {
+                            if (!_originalProgramData.TryGetValue(program, out Program originalProgram))
+                                continue;
+
+                            if (!HasChanges(program, originalProgram))
+                                continue;
+
+                            if (!ValidateAndUpdateProgram(program, originalProgram))
+                            {
+                                RevertChanges(program, originalProgram);
+                            }
+                        }
+
+                        transaction.Commit();
+                        LoadPrograms();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
                     }
                 }
             }
-            finally
+            catch (MySqlException ex)
             {
-                LoadPrograms();
+                MessageBox.Show($"Database error: {ex.Message}", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -377,8 +386,6 @@ namespace sis_app.Controls.View
             current.CollegeCode = original.CollegeCode;
         }
         #endregion
-
-        // search functionality
         #region Search Functionality
         public void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -427,7 +434,6 @@ namespace sis_app.Controls.View
         }
         #endregion
 
-        // data management methods
         #region Data Management Methods
         private bool ValidateAndUpdateProgram(Program program, Program originalProgram)
         {
@@ -440,9 +446,28 @@ namespace sis_app.Controls.View
                 return false;
             }
 
-            UpdateRelatedStudents(originalProgram.Code, program.Code, program.CollegeCode);
-            _programDataService.UpdateProgram(originalProgram, program);
-            return true;
+            try
+            {
+                _programDataService.UpdateProgram(originalProgram, program);
+
+                // After successful update, refresh the students to show the cascaded changes
+                var affectedStudents = _studentDataService.GetAllStudents()
+                    .Where(s => s.ProgramCode.Equals(program.Code, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+                if (affectedStudents.Any())
+                {
+                    ShowStudentsUpdatedMessage(originalProgram.Code, program.Code, affectedStudents.Count);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error updating program: {ex.Message}", "Update Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
         }
 
         private bool IsDuplicateCode(Program program)
@@ -464,9 +489,22 @@ namespace sis_app.Controls.View
 
             foreach (var student in affectedStudents)
             {
+                var originalStudent = new Student
+                {
+                    IDNumber = student.IDNumber,
+                    FirstName = student.FirstName,
+                    LastName = student.LastName,
+                    ProgramCode = student.ProgramCode,
+                    CollegeCode = student.CollegeCode,
+                    YearLevel = student.YearLevel,
+                    Gender = student.Gender,
+                    User = student.User,
+                    DateTime = student.DateTime
+                };
+
                 student.ProgramCode = newCode;
                 student.CollegeCode = newCollegeCode;
-                _studentDataService.UpdateStudent(student, student);
+                _studentDataService.UpdateStudent(originalStudent, student);
             }
         }
 
@@ -504,8 +542,6 @@ namespace sis_app.Controls.View
             return null;
         }
         #endregion
-
-        // delete operations
         #region Delete Operations
         private void DeleteSelectedButton_Click(object sender, RoutedEventArgs e)
         {
@@ -518,8 +554,31 @@ namespace sis_app.Controls.View
 
             if (ConfirmDeletion(selectedItems))
             {
-                DeletePrograms(selectedItems);
-                LoadPrograms();
+                try
+                {
+                    using (var connection = new MySqlConnection(App.DatabaseService._connectionString))
+                    {
+                        connection.Open();
+                        using var transaction = connection.BeginTransaction();
+
+                        try
+                        {
+                            DeletePrograms(selectedItems);
+                            transaction.Commit();
+                            LoadPrograms();
+                        }
+                        catch
+                        {
+                            transaction.Rollback();
+                            throw;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error deleting programs: {ex.Message}", "Delete Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
@@ -527,7 +586,47 @@ namespace sis_app.Controls.View
         {
             if (ConfirmClearAll())
             {
-                ClearAllData();
+                try
+                {
+                    using (var connection = new MySqlConnection(App.DatabaseService._connectionString))
+                    {
+                        connection.Open();
+                        using var transaction = connection.BeginTransaction();
+
+                        try
+                        {
+                            var allPrograms = _programDataService.GetAllPrograms();
+                            foreach (var program in allPrograms)
+                            {
+                                DeleteProgramAndUpdateStudents(program);
+                            }
+
+                            transaction.Commit();
+                            LoadPrograms();
+
+                            MessageBox.Show(
+                                $"All program data has been cleared successfully. Affected students have been updated.",
+                                "Success",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Information
+                            );
+                        }
+                        catch
+                        {
+                            transaction.Rollback();
+                            throw;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        $"Error clearing program data: {ex.Message}",
+                        "Error",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
+                }
             }
         }
 
@@ -564,19 +663,32 @@ namespace sis_app.Controls.View
 
         private void DeleteProgramAndUpdateStudents(Program program)
         {
-            _programDataService.DeleteProgram(program);
-            _programs.Remove(program);
-            _allPrograms.Remove(program);
-
             var affectedStudents = _studentDataService.GetAllStudents()
                 .Where(s => s.ProgramCode.Equals(program.Code, StringComparison.OrdinalIgnoreCase))
                 .ToList();
 
+            _programDataService.DeleteProgram(program);
+            _programs.Remove(program);
+            _allPrograms.Remove(program);
+
             foreach (var student in affectedStudents)
             {
+                var originalStudent = new Student
+                {
+                    IDNumber = student.IDNumber,
+                    FirstName = student.FirstName,
+                    LastName = student.LastName,
+                    ProgramCode = student.ProgramCode,
+                    CollegeCode = student.CollegeCode,
+                    YearLevel = student.YearLevel,
+                    Gender = student.Gender,
+                    User = student.User,
+                    DateTime = student.DateTime
+                };
+
                 student.ProgramCode = DELETED_MARKER;
                 student.CollegeCode = DELETED_MARKER;
-                _studentDataService.UpdateStudent(student, student);
+                _studentDataService.UpdateStudent(originalStudent, student);
             }
         }
 
@@ -608,38 +720,7 @@ namespace sis_app.Controls.View
             ) == MessageBoxResult.Yes;
         }
 
-        private void ClearAllData()
-        {
-            try
-            {
-                var students = _studentDataService.GetAllStudents();
-                var affectedStudents = students.Where(s => s.ProgramCode != DELETED_MARKER).ToList();
-
-                if (affectedStudents.Any())
-                {
-                    foreach (var student in affectedStudents)
-                    {
-                        student.ProgramCode = DELETED_MARKER;
-                        student.CollegeCode = DELETED_MARKER;
-                        _studentDataService.UpdateStudent(student, student);
-                    }
-                }
-
-                File.WriteAllText(_programDataService._filePath, string.Empty);
-                LoadPrograms();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    $"Error clearing program data: {ex.Message}",
-                    "Error",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error
-                );
-            }
-        }
-
-        // sorting methods
+        #region Sorting Methods
         private void SortComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SortPrograms();
@@ -691,6 +772,7 @@ namespace sis_app.Controls.View
             }
             ProgramListView.Items.Refresh();
         }
+        #endregion
         #endregion
     }
 }
