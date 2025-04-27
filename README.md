@@ -1,23 +1,20 @@
 # Gungnir
 
-A Student Information System (version 1.0) developed using Windows Presentation Foundation (WPF), designed to 
-efficiently manage college records, program information, and student data.
+A Student Information System (version 2.0) developed using Windows Presentation Foundation (WPF), designed to 
+efficiently manage college records, program information, and student data. MySQL has been integrated as its
+primary database.
 
 
 ## Dashboard Demo
-![dashboard_demo](https://github.com/user-attachments/assets/03a04c21-567f-4d6a-8ef2-db4922a2edc0)
+![dashboard_demo](https://github.com/user-attachments/assets/aad25080-9f0d-4ad8-b557-36723d06d063)
 
 
 ## Notes and Remarks
 
 This project is a work in progress. The current version is a prototype and is intended for demonstration purposes only.
-The CSV files can be found in the folder "Data".
 
-To access the application, use the following credentials:
-- Username: admin
-- Password: admin
 
-You can also register a new account by clicking the "Register" button.
+To access the application, register a new account by clicking the "Register" button.
 
 If you are encountering an issue where it says "Run a NuGet package restore to generate this file", please follow the steps below:
 - (Based in Visual Studio) From Tools > NuGet Package Manager > Package Manager Console simply run:
@@ -55,7 +52,6 @@ The error occurs because the dotnet command line interface does not create all o
 - User roles and permissions
 - Improved data validation
 - Data export, import, backup, and restore
-- Database integration (SQL Server, MySQL, PostgreSQL)
 
 
 ## Contributing
@@ -70,7 +66,7 @@ process for submitting pull requests to me.
 - C# (.NET Framework)
 - Windows Presentation Foundation (WPF)
 - XAML
-- CSV Data Storage
+- MySQL
 
 
 ## Author
