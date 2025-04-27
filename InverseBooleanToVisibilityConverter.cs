@@ -3,8 +3,6 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-// not used. this is for history feature soon
-
 namespace sis_app
 {
     public class InverseBooleanToVisibilityConverter : IValueConverter
