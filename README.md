@@ -1,4 +1,4 @@
-# Gungnir
+# La Accademia
 
 A Student Information System (version 2.0) developed using Windows Presentation Foundation (WPF), designed to 
 efficiently manage college records, program information, and student data. MySQL has been integrated as its
