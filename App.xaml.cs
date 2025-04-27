@@ -16,7 +16,7 @@ namespace sis_app
         {
             base.OnStartup(e);
 
-            string connectionString = "Server=localhost;Database=accademia2;Uid=root;Pwd=@Stampylonghead12;";
+            string connectionString = "Server=localhost;Database=accademia;Uid=root;Pwd=root;";
             DatabaseService = new DatabaseService(connectionString);
         }
     }
