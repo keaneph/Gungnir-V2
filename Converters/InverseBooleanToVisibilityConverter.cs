@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace sis_app
+namespace sis_app.Converters
 {
     public class InverseBooleanToVisibilityConverter : IValueConverter
     {
