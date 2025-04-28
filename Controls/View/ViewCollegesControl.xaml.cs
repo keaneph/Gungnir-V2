@@ -16,7 +16,7 @@ namespace sis_app.Controls.View
     public partial class ViewCollegesControl : UserControl
     {
         // maximum lengths for input validation
-        private const int MAX_COLLEGE_NAME_LENGTH = 27;
+        private const int MAX_COLLEGE_NAME_LENGTH = 45;
         private const int MAX_COLLEGE_CODE_LENGTH = 9;
         private const int MIN_CODE_LENGTH = 2;
 

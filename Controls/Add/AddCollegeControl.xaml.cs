@@ -11,7 +11,7 @@ namespace sis_app.Controls.Add
     public partial class AddCollegeControl : UserControl
     {
         // character limits for college name and code
-        private const int MAX_COLLEGE_NAME_LENGTH = 27;
+        private const int MAX_COLLEGE_NAME_LENGTH = 45;
         private const int MAX_COLLEGE_CODE_LENGTH = 9;
 
         // service for handling college data operations
