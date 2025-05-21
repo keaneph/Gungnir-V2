@@ -13,7 +13,7 @@ namespace sis_app.Controls.Add
     public partial class AddProgramControl : UserControl
     {
         // character limits for program name and code
-        private const int MAX_PROGRAM_NAME_LENGTH = 27;
+        private const int MAX_PROGRAM_NAME_LENGTH = 45;
         private const int MAX_PROGRAM_CODE_LENGTH = 7;
 
         // services for handling data operations

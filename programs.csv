@@ -1,0 +1,11 @@
+Name,Code,CollegeCode,DateTime,User
+Bachelor of Science in Computer Engineering,BSCE,COE,2024-03-20 10:00:00,Admin
+Bachelor of Science in Chemical Engineering,BSCHE,COE,2024-03-20 10:00:01,Admin
+Bachelor of Science in Biology,BSBIO,COS,2024-03-20 10:00:02,Admin
+Bachelor of Arts in Literature,BAL,CAL,2024-03-20 10:00:03,Admin
+Bachelor of Science in Accountancy,BSA,CBA,2024-03-20 10:00:04,Admin
+Bachelor of Elementary Education,BEED,COED,2024-03-20 10:00:05,Admin
+Bachelor of Science in Architecture,BSARCH,CAR,2024-03-20 10:00:06,Admin
+Doctor of Medicine,MD,COM,2024-03-20 10:00:07,Admin
+Bachelor of Laws,LLB,COL,2024-03-20 10:00:08,Admin
+Bachelor of Science in Nursing,BSN,CON,2024-03-20 10:00:09,Admin 

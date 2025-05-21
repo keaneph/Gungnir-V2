@@ -7,7 +7,6 @@
         xmlns:viewControls="clr-namespace:sis_app.Controls.View"
         Title="La Accademia - Home"
         WindowStartupLocation="CenterScreen"
-		ResizeMode="NoResize"
         Width="1600"
         Height="900">
 

@@ -16,7 +16,7 @@ namespace sis_app.Controls.View
     public partial class ViewProgramsControl : UserControl
     {
         #region Constants
-        private const int MAX_PROGRAM_NAME_LENGTH = 27;
+        private const int MAX_PROGRAM_NAME_LENGTH = 45;
         private const int MAX_PROGRAM_CODE_LENGTH = 7;
         private const int MIN_CODE_LENGTH = 2;
         private const string DELETED_MARKER = "DELETED";
